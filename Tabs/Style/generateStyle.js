@@ -146,7 +146,7 @@ const generateStyle = StyleSheet.create({
 
     },qr:{
 
-        marginVertical:"5%",
+        // marginVertical:"5%",
         // borderWidth:1,
         padding:20,
         backgroundColor:"white",

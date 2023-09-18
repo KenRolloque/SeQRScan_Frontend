@@ -1,0 +1,18 @@
+  <!-- // const navigation = useNavigation()
+
+  //   return (
+  //     <SafeAreaView>
+  //       <Text> Scan </Text>
+
+  //       <TouchableOpacity onPress={() => navigation.navigate('SafeScreen')}>
+  //         <Text >Safe</Text>
+  //       </TouchableOpacity>
+
+  //       <TouchableOpacity onPress={() => navigation.navigate('SuspiciousScreen')}>
+  //         <Text >Safe</Text>
+  //       </TouchableOpacity>
+
+       
+  //     </SafeAreaView>
+  //   );
+  // } -->

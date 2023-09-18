@@ -1,4 +1,4 @@
-import { StyleSheet,TextInput, TouchableOpacity,ImageBackground, Modal, Alert, Pressable,  ToastAndroid, PixelRatio,Text, View  } from 'react-native';
+import { StyleSheet,TextInput, TouchableOpacity,ImageBackground, Modal, Alert, Pressable, PixelRatio,Text, View, ToastAndroid } from 'react-native';
 
 import { generateStyle } from './Style/generateStyle';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -20,7 +20,7 @@ import {
 
 
 
-export default function TabTwoScreen() {
+export default function Generate() {
 
     
     // Export Font
@@ -90,33 +90,48 @@ export default function TabTwoScreen() {
 
 
 
-        const targetPixelCount = 1080;
+        const targetPixelCount = 2160;
         const pixelRatio = PixelRatio.get();
         const pixels = targetPixelCount / pixelRatio;
 
+        const { status } = await MediaLibrary.requestPermissionsAsync();
+
+
+
+        if (status === 'granted') {
 
         if (viewShotRef.current) {
-            const uri =  await captureRef(viewShotRef.current,{
+            
+            try{
+
+                const uri =  await captureRef(viewShotRef.current,{
       
-              format:'png',
-              quality:1,
-              height: pixels,
-              width: pixels,
-              
-            });
-      
-            const asset = await MediaLibrary.createAssetAsync(uri);
-      
-            console.log('QR Code PNG image saved:', asset.uri);
-      
+                    format:'png',
+                    quality:1,
+                    height: pixels,
+                    width: pixels,
+                    
+                  });
+            
+                  const asset = await MediaLibrary.createAssetAsync(uri);
+            
+                  console.log('QR Code PNG image saved:', asset.uri);
+
+            }catch(error){
+                console.error("Error Capturing QR Code",error)
+            }
+    
       
           }
+        }else{
+            console.error('Permission to save to media library denied');
+          }
 
-        // ToastAndroid.showWithGravity(
-        //   'Saved to Local Gallery',
-        //   ToastAndroid.SHORT, //can be SHORT, LONG
-        //   ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
-        // );
+        ToastAndroid.showWithGravity(
+          'Saved to Local Gallery',
+          ToastAndroid.SHORT, //can be SHORT, LONG
+          ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+        );
 
 
 

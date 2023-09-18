@@ -6,11 +6,17 @@ npm install @react-navigation/stack
 npx expo install expo-image
 
 
+// Scan
+npx expo install @react-native-community/slider
+npx expo install expo-barcode-scanner
+npx expo install expo-image-picker
+
 // Gallery
 
 npm i react-native-qrcode-svg
 npx expo install react-native-view-shot
 npx expo install expo-media-library
+npx expo install expo-camera
 
 // History
 
