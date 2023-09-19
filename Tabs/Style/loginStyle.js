@@ -24,8 +24,14 @@ const loginStyle = StyleSheet.create({
         flexDirection:"row",
         alignItems:"center",
         justifyContent:"space-around",
-        width:"80%",
-        borderWidth:1
+        width:"70%",
+        marginTop:40,
+        // borderWidth:1,
+        paddingVertical:15,
+        paddingHorizontal:20,
+        borderRadius:30,
+        backgroundColor:"#e8e8e8"
+        // backgroundColor:"#dbdbdb"
 
     },
     image:{

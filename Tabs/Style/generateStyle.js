@@ -6,6 +6,7 @@ const generateStyle = StyleSheet.create({
     mainContainer:{
         flex:1,
         alignItems:"center",
+        backgroundColor:"#ffffff"
       
     },
     
@@ -24,7 +25,19 @@ const generateStyle = StyleSheet.create({
         // backgroundColor:"#004594",
         
 
-    },textContainer:{
+    },
+    descContainerModal:{
+        width:"90%",
+        alignItems:"center",
+        marginTop:10,
+        marginBottom:10,
+        flexDirection:"row",
+        backgroundColor:"#f0f8ff",
+        padding:10,
+        borderRadius:10
+    },
+    
+    textContainer:{
         width:"100%",
         flexDirection:"row",
         alignItems:"center",
@@ -64,7 +77,8 @@ const generateStyle = StyleSheet.create({
         borderColor:"#A6A6A6",
         // fontFamily:"myFont",
         color:"#706f6f",
-        height:100
+        height:400
+  
         
  
 
@@ -154,12 +168,12 @@ const generateStyle = StyleSheet.create({
         
     },actionBttn:{
         width:"100%",
-        marginTop:20,
+        // marginTop:20,
         // backgroundColor:"#1565C0",
         flexDirection:"row",
         justifyContent:"center",
         borderRadius:5,
-        paddingVertical:10,
+        paddingVertical:50,
         // backgroundColor:"#004594",
     },
     addBttn:{
@@ -216,8 +230,8 @@ const generateStyle = StyleSheet.create({
         width:"100%",
         flex:1,
         // marginTop: 20,
-        // backgroundColor: 'white',
-        paddingBottom:20,
+        // backgroundColor: 'red',
+        // paddingBottom:20,
         // borderRadius: 20,
         // padding: 35,
         alignItems: 'center',
@@ -269,18 +283,32 @@ const generateStyle = StyleSheet.create({
 
       linkContainer:{
         width:"90%",
-        alignItems:"center",
+        // alignItems:"center",
         marginBottom:10,
         flexDirection:"row",
         // borderWidth:1,
         backgroundColor:"#f0f8ff",
         padding:10,
-        borderRadius:10
+        borderRadius:10,
+        height:"50%"
+    },
+
+    descContainer:{
+        width:"90%",
+        // alignItems:"center",
+        marginBottom:10,
+        flexDirection:"row",
+        // borderWidth:1,
+        // backgroundColor:"#f0f8ff",
+        // padding:10,
+        borderRadius:10,
     },
 
     linkIconContainer:{
         paddingHorizontal:10,
-        backgroundColor:"none"
+        backgroundColor:"none",
+
+        // justifyContent:"center"
 
     },
 
@@ -288,7 +316,10 @@ const generateStyle = StyleSheet.create({
 
     },
     linkLabelContainer:{
-        backgroundColor:"none"
+        backgroundColor:"none",
+        // borderWidth:1,
+        width:"80%",
+        // height:"50%"
 
     },
     linkLabel:{
@@ -301,10 +332,29 @@ const generateStyle = StyleSheet.create({
     },
     link:{
         color:"#00BF63",
+        width:"100%",
+
        
         // fontFamily:"Poppins"
     },
+    desc:{
+        color:"#00BF63",
+        width:"100%",
 
+
+    },
+
+    descLabel:{
+        fontSize:16,
+        fontWeight:"bold"
+
+
+    },
+
+    descLabelContainer:{
+        backgroundColor:"none",
+        width:"80%"
+    }
 
 
 

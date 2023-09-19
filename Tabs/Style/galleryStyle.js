@@ -57,7 +57,8 @@ const galleryStyle = StyleSheet.create({
     qrGallery:{
         width:"90%",
         // borderWidth:1,
-        marginTop:20
+        marginTop:20,
+        marginBottom:40,
 
     },qrItem:{
         flexDirection:"row",
@@ -175,7 +176,8 @@ const galleryStyle = StyleSheet.create({
         width:"100%",
         flexDirection:"row",
         justifyContent:"center",
-        backgroundColor:"none"
+        backgroundColor:"none",
+        marginTop:20
         
     },
 
@@ -211,15 +213,27 @@ const galleryStyle = StyleSheet.create({
 
     linkContainer:{
         width:"90%",
+        // alignItems:"center",
+        marginTop:10,
+        marginBottom:10,
+        flexDirection:"row",
+        backgroundColor:"#f0f8ff",
+        padding:10,
+        borderRadius:10,
+        height:"40%"
+    },
+
+    descContainer:{
+        width:"90%",
         alignItems:"center",
         marginTop:10,
         marginBottom:10,
         flexDirection:"row",
-        // borderWidth:1,
         backgroundColor:"#f0f8ff",
         padding:10,
         borderRadius:10
     },
+
 
     linkIconContainer:{
         paddingHorizontal:10,
@@ -231,7 +245,9 @@ const galleryStyle = StyleSheet.create({
 
     },
     linkLabelContainer:{
-        backgroundColor:"none"
+        backgroundColor:"none",
+        width:"80%"
+    
 
     },
     linkLabel:{
@@ -244,9 +260,19 @@ const galleryStyle = StyleSheet.create({
     },
     link:{
         color:"#00BF63",
+        // borderWidth:1,
+        // height:210,
+        width:"100%"
        
         // fontFamily:"Poppins"
     },
+
+    desc:{
+        color:"#00BF63",
+        // borderWidth:1,
+      
+        width:"100%"
+    }
 
 })
 

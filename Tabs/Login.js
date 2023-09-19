@@ -12,6 +12,7 @@ const Login = ({navigation}) =>{
     const signin = () =>{
       navigation.navigate(Navigation);
     }
+    
     return (
       <SafeAreaView style={loginStyle.mainContainer}>
 
@@ -22,9 +23,11 @@ const Login = ({navigation}) =>{
 
           
           <TouchableOpacity style ={loginStyle.loginBttn} onPress={signin}>
-
-            {/* <Image style={loginStyle.image} src={require('../components/images/google.png')}/> */}
-            <Text> Continue with Google</Text>
+            <Image 
+                source={require("../components/images/google.png")}
+                style={{height: 25, width:25}}
+            />
+            <Text style ={{ width:"61%"}}> Continue with Google</Text>
           </TouchableOpacity>
          
       </SafeAreaView>

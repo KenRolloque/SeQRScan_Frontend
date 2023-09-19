@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity,FlatList, Image, ImageBackground, Modal, PixelRatio, ToastAndroid } from 'react-native';
+import { StyleSheet, TouchableOpacity,FlatList, Image, ImageBackground, Modal, PixelRatio, ToastAndroid, ScrollView } from 'react-native';
 
 import { galleryStyle } from './Style/galleryStyle';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -27,11 +27,16 @@ export default function Gallery() {
 
   const qrData = [
 
-    {id: '1', value:"QRCodeValue12", description:"Description 1",dates: new Date("2023-08-10")},
+    {id: '1', value:"QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12", description:"Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1",dates: new Date("2023-08-10")},
     {id: '2', value:"QRCodeValue2", description:"Description 2",dates: new Date("2023-09-10")},
     {id: '3', value:"QRCodeValue3", description:"Description 3",dates: new Date("2023-10-10")},
     {id: '4', value:"QRCodeValue4", description:"Description 4",dates: new Date("2023-11-10")},
     {id: '5', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
+    {id: '6', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
+    {id: '7', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
+    {id: '8', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
+    {id: '9', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
+    {id: '10', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
   ];
 
   
@@ -177,8 +182,8 @@ export default function Gallery() {
         <QRCode value ={item.value} size={30}/>
         
         <View  style = {galleryStyle.qrDesc}>
-            <Text> {item.id} </Text>
-            <Text> {item.value} </Text>
+            <Text numberOfLines={1}> {item.id} </Text>
+            <Text numberOfLines={1}> {item.value} </Text>
             <Text>{item.dates.toDateString()}</Text>
         </View>  
 
@@ -235,29 +240,31 @@ export default function Gallery() {
      <Text style={galleryStyle.modalValue}>{selectedQR.value}</Text> */}
 
     
-    <View style={galleryStyle.linkContainer}>
+    <View style={galleryStyle.descContainer}>
 
         <View style={galleryStyle.linkIconContainer}>
-            <Ionicons  style ={galleryStyle.linkIcon} name='document-text-outline' size={25}  />
+            <Ionicons  style ={galleryStyle.linkIcon} name='document-text-outline' size={20}  />
         </View>
 
         <View style={galleryStyle.linkLabelContainer}>
 
           <Text style={galleryStyle.linkLabel}> Description </Text>
-          <Text  style={galleryStyle.link} >{selectedQR.description} </Text> 
-    </View>
+          <Text  style={galleryStyle.desc} numberOfLines={2}>{selectedQR.description} </Text> 
+      </View>
     </View>
 
 
     <View style={galleryStyle.linkContainer}>
 
         <View style={galleryStyle.linkIconContainer}>
-            <Ionicons  style ={galleryStyle.linkIcon} name='mail-outline' size={25}  />
+            <Ionicons  style ={galleryStyle.linkIcon} name='mail-outline' size={20}  />
         </View>
 
         <View style={galleryStyle.linkLabelContainer}>
-            <Text style={galleryStyle.linkLabel}> Content </Text>
-            <Text  style={galleryStyle.link} >  {selectedQR.value}</Text> 
+          <ScrollView style={{paddingRight:20}}>
+              <Text style={galleryStyle.linkLabel}> Content </Text>
+              <Text  style={galleryStyle.link} >  {selectedQR.value}</Text> 
+            </ScrollView>
         </View>
 
     </View>
@@ -319,6 +326,7 @@ export default function Gallery() {
         <FlatList
             data={sortedData}
             renderItem={renderQR}
+  
            
        />
         {renderButtonList()}

@@ -23,12 +23,18 @@ export default function History() {
   //  List of Data
   const historyData = [
 
-      {id:"1", link:"Link1" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
+      {id:"1", link:"Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
       {id:"2", link:"Link2" ,linkStatus:"Suspicious", time:"12:00 am", date:"08/03/2023"},
       {id:"3", link:"Link3" ,linkStatus:"Suspicious", time:"12:00 am", date:"08/03/2023"},
       {id:"4", link:"Link4" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
       {id:"5", link:"Link5" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
       {id:"6", link:"Link6" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
+      {id:"7", link:"Link7" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
+      {id:"8", link:"Link8" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
+      {id:"9", link:"Link9" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
+      {id:"10", link:"Link10" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
+      {id:"11", link:"Link11" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
+      {id:"12", link:"Link12" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
     ];
 
 
@@ -70,51 +76,40 @@ export default function History() {
   const [data , setData] = useState(historyData);
   const [activeFilter, setActiveFilter] = useState('All');
 
-      const filterData = (state) =>{
+      // const filterData = (state) =>{
 
-            if (state === 'All'){
-                setData(historyData);
-            }else{
+      //       if (state === 'All'){
+      //           setData(historyData);
+      //       }else{
 
-            const filtered = historyData.filter(item => item.linkStatus === state);
-              setData(filtered);
-            }
+      //       const filtered = historyData.filter(item => item.linkStatus === state);
+      //         setData(filtered);
+      //       }
 
-            setActiveFilter(state)
-      };
+      //       setActiveFilter(state)
+      // };
 
   
   // Render Button with color based on data status
-  const renderButton = (state, color) =>{
+  // const renderButton = (state, color) =>{
 
-      const isActive = activeFilter === state;
+  //     const isActive = activeFilter === state;
 
-      return(
-        <TouchableOpacity 
-            onPress = {() => filterData(state)} 
-            style = {[historyStyle.allBttn, isActive && {backgroundColor:color}]} 
+  //     return(
+  //       <TouchableOpacity 
+  //           onPress = {() => filterData(state)} 
+  //           style = {[historyStyle.allBttn, isActive && {backgroundColor:color}]} 
 
-            >
+  //           >
             
-            <Text 
-              style = {isActive && historyStyle.activeButtonText}>{state}  </Text>
-        </TouchableOpacity>
+  //           <Text 
+  //             style = {isActive && historyStyle.activeButtonText}>{state}  </Text>
+  //       </TouchableOpacity>
 
 
-            // <TouchableOpacity style = {historyStyle.allBttn} onPress = {() => filterData('All')}> 
-           //     <Text style = {historyStyle.allBttn_label}> All </Text>
-            // </TouchableOpacity>
+  //     );
 
-            // <TouchableOpacity style = {historyStyle.safeBttn} onPress = {() => filterData('Safe')}> 
-            //     <Text style = {historyStyle.safeBttn_label}> Safe </Text>
-            // </TouchableOpacity>
-
-            // <TouchableOpacity style = {historyStyle.susBttn} onPress = {() => filterData('Suspicious')}> 
-            //     <Text style = {historyStyle.susBttn_label}> Suspicious </Text>
-            // </TouchableOpacity>
-      );
-
-  }
+  // }
 
 
     const renderAllData = ({item}) => {
@@ -129,7 +124,7 @@ export default function History() {
           <Ionicons  name='person' size={18} color="#2FA0D8"/>
           <View style = {historyStyle.details}>
             <Text> You scanned </Text>
-            <Text> {item.link}</Text>
+            <Text numberOfLines={1}> {item.link}</Text>
           </View>
         </View>
 
@@ -150,36 +145,23 @@ export default function History() {
     
     <SafeAreaView style = {historyStyle.mainContainer}>
 
-        <View style = {historyStyle.bttnCont}>
+        {/* <View style = {historyStyle.bttnCont}>
 
            {renderButton('All','#2FA0D8')}
            {renderButton('Safe','#25C196')}
            {renderButton('Suspicious','#FF5757')}
 
-{/* 
-            <TouchableOpacity style = {historyStyle.allBttn} onPress = {() => filterData('All')}> 
-                <Text style = {historyStyle.allBttn_label}> All </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style = {historyStyle.safeBttn} onPress = {() => filterData('Safe')}> 
-                <Text style = {historyStyle.safeBttn_label}> Safe </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style = {historyStyle.susBttn} onPress = {() => filterData('Suspicious')}> 
-                <Text style = {historyStyle.susBttn_label}> Suspicious </Text>
-            </TouchableOpacity> */}
-        </View>
-
+        </View> */}
 
 
 
         <View style ={historyStyle.historyList}>
             <FlatList 
                   // style ={historyStyle.historyFlatlist}
+                  // style ={{width:"90%",backgroundColor:"red"}}
                   data={data}
                   renderItem={renderAllData}
                   
-
             />
         </View>
 
