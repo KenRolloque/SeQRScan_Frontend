@@ -72,19 +72,21 @@ const historyStyle = StyleSheet.create({
         flexDirection:"row",
         alignItems:"center",
         paddingHorizontal:10,
-        backgroundColor:"none"
+        backgroundColor:"none",
+        width:"75%"
      
 
 
     },details:{
         backgroundColor:"none",
+        // borderWidth:1,
         marginLeft:10,
+        // width:"80%"
     },
 
     rightHistory:{
         marginRight:20,
         backgroundColor:"none",
-        // borderWidth:1,
         alignItems:"flex-end"
     },
     historyTime:{
@@ -109,12 +111,8 @@ const historyStyle = StyleSheet.create({
     
     },
     historyList:{
-        // width:"100%",
-        alignItems:"center",
-        borderWidth:1
-    },
-    historyList:{
         width:"90%",
+        alignItems:"center",
     },
     activeButtonText:{
 

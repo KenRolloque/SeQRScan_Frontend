@@ -1,8 +1,8 @@
-import { StyleSheet, TouchableOpacity,FlatList, Image, ImageBackground, Modal, PixelRatio } from 'react-native';
+import { StyleSheet, TouchableOpacity,FlatList, Image, ImageBackground, Modal, PixelRatio, ToastAndroid, ScrollView } from 'react-native';
 
 import { galleryStyle } from './Style/galleryStyle';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { TextInput } from 'react-native-gesture-handler';
+
 import QRCode from 'react-native-qrcode-svg';
 import React, { useRef, useState } from 'react';
 import ViewShot, { captureRef } from 'react-native-view-shot';
@@ -24,13 +24,19 @@ export default function Gallery() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedQR, setSelectedQR] = useState(null);
 
+
   const qrData = [
 
-    {id: '1', value:"QRCodeValue12", description:"Description 1",dates: new Date("2023-08-10")},
+    {id: '1', value:"QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12", description:"Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1",dates: new Date("2023-08-10")},
     {id: '2', value:"QRCodeValue2", description:"Description 2",dates: new Date("2023-09-10")},
     {id: '3', value:"QRCodeValue3", description:"Description 3",dates: new Date("2023-10-10")},
     {id: '4', value:"QRCodeValue4", description:"Description 4",dates: new Date("2023-11-10")},
     {id: '5', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
+    {id: '6', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
+    {id: '7', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
+    {id: '8', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
+    {id: '9', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
+    {id: '10', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
   ];
 
   
@@ -44,35 +50,63 @@ export default function Gallery() {
   const downloadToast = async () => {
     //function to make Toast With Duration And Gravity
 
-    const targetPixelCount = 1080;
+    const targetPixelCount = 2160;
     const pixelRatio = PixelRatio.get();
     const pixels = targetPixelCount / pixelRatio;
 
+    const { status } = await MediaLibrary.requestPermissionsAsync();
 
-    if (viewShotRef.current) {
-        const uri =  await captureRef(viewShotRef.current,{
+    if (status === 'granted') {
+      if (viewShotRef.current) {
+
+        try{
+          const uri =  await captureRef(viewShotRef.current,{
+    
+            format:'png',
+            quality:1,
+            height: pixels,
+            width: pixels,
+            
+          });
   
-          format:'png',
-          quality:1,
-          height: pixels,
-          width: pixels,
-          
-        });
+          console.log(uri)
+          saveToGallery(uri)
+    
+        }catch (error){
+          console.error("Error Capturing QR Code",error)
   
-        const asset = await MediaLibrary.createAssetAsync(uri);
+  
+        }
+    
+    
+        }
+      
+    } else {
+      console.error('Permission to save to media library denied');
+    }
+
+
+
+    ToastAndroid.showWithGravity(
+      'Saved to gallery.',
+      ToastAndroid.SHORT, //can be SHORT, LONG
+      ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+    );
+  };
+
+
+  const saveToGallery = async (uri) =>{
+
+    try{
+      
+      const asset = await MediaLibrary.createAssetAsync(uri);
   
         console.log('QR Code PNG image saved:', asset.uri);
-  
-  
-      }
 
-
-    // ToastAndroid.showWithGravity(
-    //   'Saved to gallery.',
-    //   ToastAndroid.SHORT, //can be SHORT, LONG
-    //   ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
-    // );
-  };
+    }catch(error){
+      console.error("Error Saving QR Code",error)
+    }
+  }
 
 
     // Sort Data Function
@@ -148,8 +182,8 @@ export default function Gallery() {
         <QRCode value ={item.value} size={30}/>
         
         <View  style = {galleryStyle.qrDesc}>
-            <Text> {item.id} </Text>
-            <Text> {item.value} </Text>
+            <Text numberOfLines={1}> {item.id} </Text>
+            <Text numberOfLines={1}> {item.value} </Text>
             <Text>{item.dates.toDateString()}</Text>
         </View>  
 
@@ -178,7 +212,7 @@ export default function Gallery() {
 
  <TouchableOpacity style= {galleryStyle.backIconCont} onPress={ ()=> setModalVisible(!modalVisible)}>
 
-     <Ionicons name='arrow-back-outline' size={20} color="white" />
+     <Ionicons name='arrow-back-outline' size={20} />
 
  </TouchableOpacity>
 
@@ -190,7 +224,7 @@ export default function Gallery() {
         ref={viewShotRef} 
         options={{ format: 'png', quality: 1 }}
     >
-     <View style={{backgroundColor:"white", padding:20}}>
+     <View style={{backgroundColor:"#ffffff", padding:20}}>
 
          <QRCode 
          value ={selectedQR.value}
@@ -202,8 +236,41 @@ export default function Gallery() {
    </ViewShot>
 
    </View>
-     <Text style={galleryStyle.modalValue}>{selectedQR.value}</Text>
-     <Text style={galleryStyle.modalValue}>{selectedQR.description}</Text>
+     {/* <Text style={galleryStyle.modalValue}>{selectedQR.description}</Text>
+     <Text style={galleryStyle.modalValue}>{selectedQR.value}</Text> */}
+
+    
+    <View style={galleryStyle.descContainer}>
+
+        <View style={galleryStyle.linkIconContainer}>
+            <Ionicons  style ={galleryStyle.linkIcon} name='document-text-outline' size={20}  />
+        </View>
+
+        <View style={galleryStyle.linkLabelContainer}>
+
+          <Text style={galleryStyle.linkLabel}> Description </Text>
+          <Text  style={galleryStyle.desc} numberOfLines={2}>{selectedQR.description} </Text> 
+      </View>
+    </View>
+
+
+    <View style={galleryStyle.linkContainer}>
+
+        <View style={galleryStyle.linkIconContainer}>
+            <Ionicons  style ={galleryStyle.linkIcon} name='mail-outline' size={20}  />
+        </View>
+
+        <View style={galleryStyle.linkLabelContainer}>
+          <ScrollView style={{paddingRight:20}}>
+              <Text style={galleryStyle.linkLabel}> Content </Text>
+              <Text  style={galleryStyle.link} >  {selectedQR.value}</Text> 
+            </ScrollView>
+        </View>
+
+    </View>
+  
+
+
    </View>
 
    <View style={galleryStyle.modalButton}>
@@ -259,6 +326,7 @@ export default function Gallery() {
         <FlatList
             data={sortedData}
             renderItem={renderQR}
+  
            
        />
         {renderButtonList()}

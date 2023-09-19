@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native";
 const galleryStyle = StyleSheet.create({
 
     mainContainer:{
-        backgroundColor:"white",
+        backgroundColor:"#ffffff",
         flex:1,
         alignItems:"center"
 
@@ -57,7 +57,8 @@ const galleryStyle = StyleSheet.create({
     qrGallery:{
         width:"90%",
         // borderWidth:1,
-        marginTop:20
+        marginTop:20,
+        marginBottom:40,
 
     },qrItem:{
         flexDirection:"row",
@@ -101,7 +102,7 @@ const galleryStyle = StyleSheet.create({
     bttnListCont:{
         position:"absolute",
         // borderWidth:1,
-        backgroundColor:"white",
+        backgroundColor:"#ffffff",
         right:1,
         paddingVertical:20,
         paddingHorizontal:10,
@@ -131,7 +132,8 @@ const galleryStyle = StyleSheet.create({
 
 
     centeredView:{
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        // backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        backgroundColor:"#ffffff",
         flex: 1,
 
         alignItems: 'center',
@@ -156,18 +158,16 @@ const galleryStyle = StyleSheet.create({
         marginTop:20
     },
 
-    qrCodeModal:{
-        backgroundColor:"white",
-        padding:20
-    },
+  
 
     qrCodeModal:{
-        backgroundColor:"white",
-        padding:20
+        backgroundColor:"#ffffff",
+        padding:20,
+        marginBottom:10,
     },
 
     modalValue:{
-        color:"white",
+        color:"#ffffff",
         width:"85%",
         marginTop:10
     },
@@ -176,7 +176,8 @@ const galleryStyle = StyleSheet.create({
         width:"100%",
         flexDirection:"row",
         justifyContent:"center",
-        backgroundColor:"none"
+        backgroundColor:"none",
+        marginTop:20
         
     },
 
@@ -194,7 +195,7 @@ const galleryStyle = StyleSheet.create({
     },
     modalButtonDel:{
         width:"35%",
-        backgroundColor:"red",
+        backgroundColor:"#ff3636",
         paddingVertical:10,
         justifyContent:"center",
         alignItems:"center",
@@ -208,6 +209,70 @@ const galleryStyle = StyleSheet.create({
     modalButtonDelLabel:{
         color:"white"
     },
+
+
+    linkContainer:{
+        width:"90%",
+        // alignItems:"center",
+        marginTop:10,
+        marginBottom:10,
+        flexDirection:"row",
+        backgroundColor:"#f0f8ff",
+        padding:10,
+        borderRadius:10,
+        height:"40%"
+    },
+
+    descContainer:{
+        width:"90%",
+        alignItems:"center",
+        marginTop:10,
+        marginBottom:10,
+        flexDirection:"row",
+        backgroundColor:"#f0f8ff",
+        padding:10,
+        borderRadius:10
+    },
+
+
+    linkIconContainer:{
+        paddingHorizontal:10,
+        backgroundColor:"none"
+
+    },
+
+    linkIcon:{
+
+    },
+    linkLabelContainer:{
+        backgroundColor:"none",
+        width:"80%"
+    
+
+    },
+    linkLabel:{
+        fontSize:16,
+        fontWeight:"bold",
+
+        // fontFamily:"Poppins"
+
+
+    },
+    link:{
+        color:"#00BF63",
+        // borderWidth:1,
+        // height:210,
+        width:"100%"
+       
+        // fontFamily:"Poppins"
+    },
+
+    desc:{
+        color:"#00BF63",
+        // borderWidth:1,
+      
+        width:"100%"
+    }
 
 })
 

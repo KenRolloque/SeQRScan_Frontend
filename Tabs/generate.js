@@ -1,4 +1,4 @@
-import { StyleSheet,TextInput, TouchableOpacity,ImageBackground, Modal, Alert, Pressable,  ToastAndroid, PixelRatio,Text, View  } from 'react-native';
+import { StyleSheet, ScrollView,TextInput, TouchableOpacity,ImageBackground, Modal, Pressable, PixelRatio,Text, View, ToastAndroid, Alert } from 'react-native';
 
 import { generateStyle } from './Style/generateStyle';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -20,7 +20,7 @@ import {
 
 
 
-export default function TabTwoScreen() {
+export default function Generate() {
 
     
     // Export Font
@@ -45,11 +45,25 @@ export default function TabTwoScreen() {
     const [qrCodeImagePath, setQRCodeImagePath] = useState(null);
 
 
+  // Input TextAlert
+    const inputAlert = () =>
+    Alert.alert('Input Error', 'Please fill all fields', [
+
+      {text: 'OK'},
+    ]);
+
+  // Input TextAlert
+  const qrCodeAlert = () =>
+  Alert.alert('Generation Error', 'The amount of data is too big to be storedin a QR COde', [
+
+    {text: 'OK'},
+  ]);
+
 
     // Input Text
     const handleChangeText = (text) => {
 
-        setinputText (text);
+        setinputText(text);
         setShouldShow(false);
     }
 
@@ -57,20 +71,41 @@ export default function TabTwoScreen() {
     // Input Description
     const handleChangeDesc = (description) => {
 
-        setDesc (description);
+        setDesc(description);
         setShouldShow(false);
     }
 
     // Generate QR Code
     const handleGenerateQRCode = () => {
 
-        if (inputText ==="" || desc ===""){
-            
-        }else{
-            setShouldShow(true); // Show the QR code when the "Generate" button is pressed
-        }
+    
+            if (inputText === "" || desc === ""){
+
+                inputAlert();
+                
+            }else{
+    
+                setModalVisible(true)
+                // setShouldShow(true); // Show the QR code when the "Generate" button is pressed
+            }
+
+      
+
       
     };
+
+
+    const createQR = () =>{
+        try{
+            return(
+                <QRCode value ={inputText} size={200}/>
+            )
+        }catch(error){
+
+            qrCodeAlert();
+
+        }
+    }
 
     // Clear Inputs
 
@@ -90,33 +125,48 @@ export default function TabTwoScreen() {
 
 
 
-        const targetPixelCount = 1080;
+        const targetPixelCount = 2160;
         const pixelRatio = PixelRatio.get();
         const pixels = targetPixelCount / pixelRatio;
 
+        const { status } = await MediaLibrary.requestPermissionsAsync();
+
+
+
+        if (status === 'granted') {
 
         if (viewShotRef.current) {
-            const uri =  await captureRef(viewShotRef.current,{
+            
+            try{
+
+                const uri =  await captureRef(viewShotRef.current,{
       
-              format:'png',
-              quality:1,
-              height: pixels,
-              width: pixels,
-              
-            });
-      
-            const asset = await MediaLibrary.createAssetAsync(uri);
-      
-            console.log('QR Code PNG image saved:', asset.uri);
-      
+                    format:'png',
+                    quality:1,
+                    height: pixels,
+                    width: pixels,
+                    
+                  });
+            
+                  const asset = await MediaLibrary.createAssetAsync(uri);
+            
+                  console.log('QR Code PNG image saved:', asset.uri);
+
+            }catch(error){
+                console.error("Error Capturing QR Code",error)
+            }
+    
       
           }
+        }else{
+            console.error('Permission to save to media library denied');
+          }
 
-        // ToastAndroid.showWithGravity(
-        //   'Saved to Local Gallery',
-        //   ToastAndroid.SHORT, //can be SHORT, LONG
-        //   ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
-        // );
+        ToastAndroid.showWithGravity(
+          'Saved to Local Gallery',
+          ToastAndroid.SHORT, //can be SHORT, LONG
+          ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+        );
 
 
 
@@ -138,7 +188,7 @@ export default function TabTwoScreen() {
     
    
     <SafeAreaView style = {generateStyle.mainContainer}>
-
+    
 
     {/* Section One */}
 
@@ -168,13 +218,15 @@ export default function TabTwoScreen() {
                 value={inputText}
                 placeholder='Enter Text'
                 style={generateStyle.textInput}
+                scrollEnabled= {true}
+                maxLength={1000}
             />
 
             <View style = {generateStyle.buttonsCont}>
 
                     <Pressable 
                     style = {[generateStyle.clearButton]}
-                    disabled = {inputText.trim() === '' && desc.trim() === ''}
+                    // disabled = {inputText.trim() === '' && desc.trim() === ''}
                     onPress={clearInput}
 
                     >
@@ -182,52 +234,14 @@ export default function TabTwoScreen() {
                     </Pressable>
                 
                     <TouchableOpacity 
-                        style = {[generateStyle.genButton, inputText.trim() === "" && generateStyle.disableDL]} onPress={() => setModalVisible(true)}
-                         disabled = {inputText.trim() === ''}>
+                        style = {generateStyle.genButton} onPress={handleGenerateQRCode}
+                        >
                         <Text style = {generateStyle.clearButtonText}>Generate</Text>
                     </TouchableOpacity>
         
             </View>
         </View>
 
-
-
-
-        {/* Section Two */}
-
-        {/* {shouldShow ? (
-
-            // <View  style = {generateStyle.sectionTwo}>
-            <ImageBackground style = {generateStyle.sectionTwo} source={require('../../assets/images/stacked-peaks-haikei.jpg')}>
-                <Text style ={generateStyle.ready}> Your QR Code is Ready</Text>
-
-                 <View style ={generateStyle.qrContainer}>
-
-                    <View style={generateStyle.qr}>
-                        <QRCode value ={inputText} size={200}/>
-                    </View>
-
-                    <View style ={generateStyle.actionBttn}>
-        
-                        <TouchableOpacity style ={generateStyle.dlBttn} >
-                            <Ionicons  style ={generateStyle.dlIcon} name='arrow-down-circle-outline' size={18} color="white" />
-                            <Text style ={generateStyle.dlBttn_label}> Download</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style ={generateStyle.addBttn}>
-                            <Ionicons  style ={generateStyle.addIcon} name='add-circle-outline' size={18} color="white"/>
-                            <Text style ={generateStyle.addBttn_label}> Add</Text>
-                        </TouchableOpacity>
-
-
-
-                    </View>
-     
-                </View>
-
-            </ImageBackground>    
-
-        ):null}  */}
 
 
     <Modal
@@ -279,16 +293,16 @@ export default function TabTwoScreen() {
 
 
 
-            <View style={generateStyle.linkContainer}>
+            <View style={generateStyle.descContainerModal}>
 
                     <View style={generateStyle.linkIconContainer}>
-                        <Ionicons  style ={generateStyle.linkIcon} name='document-text-outline' size={25}  />
+                        <Ionicons  style ={generateStyle.linkIcon} name='document-text-outline' size={20}  />
                     </View>
 
-                    <View style={generateStyle.linkLabelContainer}>
+                    <View style={generateStyle.descLabelContainer}>
 
-                        <Text style={generateStyle.linkLabel}> Description </Text>
-                        <Text  style={generateStyle.link} > {desc}</Text> 
+                        <Text style={generateStyle.descLabel}> Description </Text>
+                        <Text style={generateStyle.desc} > {desc}</Text> 
                     </View>
 
             </View>
@@ -296,18 +310,25 @@ export default function TabTwoScreen() {
             <View style={generateStyle.linkContainer}>
 
                 <View style={generateStyle.linkIconContainer}>
-                    <Ionicons  style ={generateStyle.linkIcon} name='mail-outline' size={25}  />
+                    <Ionicons  style ={generateStyle.linkIcon} name='mail-outline' size={20}  />
                 </View>
 
                 <View style={generateStyle.linkLabelContainer}>
-
-                    <Text style={generateStyle.linkLabel}> Content </Text>
-                    <Text  style={generateStyle.link} > {inputText} </Text> 
+                    <ScrollView>
+                        <Text style={generateStyle.linkLabel}> Content </Text>
+                        <Text  style={generateStyle.link} > {inputText} </Text> 
+                    </ScrollView>
                 </View>
 
             </View>
 
-            <View style ={generateStyle.actionBttn}>
+        </View>
+
+          </View>
+
+          
+
+          <View style ={generateStyle.actionBttn}>
 
                 <TouchableOpacity style ={generateStyle.dlBttn}  onPress={Download}>
                     <Ionicons  style ={generateStyle.dlIcon} name='arrow-down-circle-outline' size={18} color="white" />
@@ -319,14 +340,7 @@ export default function TabTwoScreen() {
                     <Text style ={generateStyle.addBttn_label}> Add</Text>
                 </TouchableOpacity>
 
-            </View>
-
-
-
         </View>
-
-          </View>
-
 
         </View>
       </Modal>
