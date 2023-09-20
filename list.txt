@@ -20,3 +20,6 @@ npx expo install expo-camera
 
 // History
 
+// font
+npx expo install expo-font
+

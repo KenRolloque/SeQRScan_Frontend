@@ -67,9 +67,10 @@ const galleryStyle = StyleSheet.create({
         paddingHorizontal:15,
         paddingVertical:15,
         backgroundColor:"#EFEFEF",
-        marginTop:"2%",
+        marginTop:"4%",
         borderStartWidth:4,
-        borderStartColor:"#25C196"
+        borderStartColor:"#25C196",
+        borderRadius:5
         // borderBottomWidth:1,
         // borderBottomColor:"#E6E6E6"
 
@@ -131,13 +132,30 @@ const galleryStyle = StyleSheet.create({
     },
 
 
+    // Font
+    descText:{
+        fontFamily:"Poppins-SemiBold",
+        // fontWeight:"bold",
+        color:"#4d4d4d",
+        fontSize:15
+    },
+    linkText:{
+        fontFamily:"Poppins-Regular",
+        color:"#4d4d4d"
+
+    },dateText:{
+        fontFamily:"Poppins-Regular",
+        color:"#4d4d4d"
+
+    },
+
     centeredView:{
         // backgroundColor: 'rgba(0, 0, 0, 0.3)',
         backgroundColor:"#ffffff",
         flex: 1,
 
         alignItems: 'center',
-        marginTop: 22,
+        // marginTop: 22,
     },
 
     backIconCont:{
@@ -151,11 +169,12 @@ const galleryStyle = StyleSheet.create({
 
     modalView:{
   
-        backgroundColor: 'none',
+        backgroundColor: '#ffffff',
+        // backgroundColor:"red",
         alignItems:"center",
         width:"80%",
-        height:"80%",
-        marginTop:20
+        height:"75%",
+        // marginTop:20
     },
 
   
@@ -177,7 +196,7 @@ const galleryStyle = StyleSheet.create({
         flexDirection:"row",
         justifyContent:"center",
         backgroundColor:"none",
-        marginTop:20
+        marginTop:"10%"
         
     },
 
@@ -220,13 +239,13 @@ const galleryStyle = StyleSheet.create({
         backgroundColor:"#f0f8ff",
         padding:10,
         borderRadius:10,
-        height:"40%"
+        height:"30%"
     },
 
     descContainer:{
         width:"90%",
         alignItems:"center",
-        marginTop:10,
+        // marginTop:10,
         marginBottom:10,
         flexDirection:"row",
         backgroundColor:"#f0f8ff",

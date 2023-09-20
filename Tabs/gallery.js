@@ -15,11 +15,13 @@ import {
   SafeAreaInsetsContext,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import { useFonts } from 'expo-font';
 
 
 
 
 export default function Gallery() {
+
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedQR, setSelectedQR] = useState(null);
@@ -47,6 +49,18 @@ export default function Gallery() {
 
   const viewShotRef = useRef(null);
 
+  // Font
+
+  const [isLoaded] = useFonts({
+    'Poppins-Regular':require ("../assets/font/Poppins/Poppins-Regular.ttf"),
+    'Poppins-SemiBold': require ("../assets/font/Poppins/Poppins-SemiBold.ttf"),
+  });
+
+  if (!isLoaded){
+    return null;
+  }
+
+  
   const downloadToast = async () => {
     //function to make Toast With Duration And Gravity
 
@@ -182,9 +196,9 @@ export default function Gallery() {
         <QRCode value ={item.value} size={30}/>
         
         <View  style = {galleryStyle.qrDesc}>
-            <Text numberOfLines={1}> {item.id} </Text>
-            <Text numberOfLines={1}> {item.value} </Text>
-            <Text>{item.dates.toDateString()}</Text>
+            <Text numberOfLines={1} style ={galleryStyle.descText}> {item.description} </Text>
+            <Text numberOfLines={1} style ={galleryStyle.linkText}> {item.value} </Text>
+            <Text style ={galleryStyle.dateText}>{item.dates.toDateString()}</Text>
         </View>  
 
         <View style = {galleryStyle.qrAction}>

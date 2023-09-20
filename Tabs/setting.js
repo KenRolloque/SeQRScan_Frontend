@@ -1,5 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text,TouchableOpacity } from 'react-native';
+
+
 import {
   SafeAreaView,
   SafeAreaProvider,
@@ -10,9 +13,14 @@ import {
 
 const Setting = () =>{
 
+    const navigation = useNavigation()
+    
+
     return (
-      <SafeAreaView>
-        <Text> Setting </Text>
+      <SafeAreaView style = {{flex:1, justifyContent:"center",alignItems:"center"}}>
+         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text style={{fontFamily:"Roboto-Regular"}} >Logout</Text>
+         </TouchableOpacity>
       </SafeAreaView>
     );
   }
