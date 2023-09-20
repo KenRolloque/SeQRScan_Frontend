@@ -73,7 +73,8 @@ const historyStyle = StyleSheet.create({
         alignItems:"center",
         paddingHorizontal:10,
         backgroundColor:"none",
-        width:"75%"
+        width:"70%",
+        // borderWidth:1
      
 
 
@@ -87,14 +88,28 @@ const historyStyle = StyleSheet.create({
     rightHistory:{
         marginRight:20,
         backgroundColor:"none",
-        alignItems:"flex-end"
+        alignItems:"flex-end",
+        // borderWidth:1
+       
+    },
+
+    introText:{
+        fontFamily:"Poppins-SemiBold",
+        color:"#4d4d4d"
+    },
+    linkText:{
+        fontFamily:"Poppins-Regular",
+        color:"#4d4d4d"
     },
     historyTime:{
-
+        fontFamily:"Poppins-Regular",
+        color:"#4d4d4d"
 
     },
     historyDate:{
 
+        fontFamily:"Poppins-Regular",
+        color:"#4d4d4d"
 
     },
     listHistory2:{

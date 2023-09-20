@@ -10,6 +10,8 @@ import * as MediaLibrary from "expo-media-library";
 import ViewShot from 'react-native-view-shot';
 import { captureRef } from 'react-native-view-shot';
 
+import { useFonts } from 'expo-font';
+
 import {
   SafeAreaView,
   SafeAreaProvider,
@@ -24,7 +26,6 @@ export default function Generate() {
 
     
     // Export Font
-
 
     
 
@@ -43,6 +44,18 @@ export default function Generate() {
 
     const viewShotRef = useRef(null);
     const [qrCodeImagePath, setQRCodeImagePath] = useState(null);
+
+    // Font
+    const [isLoaded] = useFonts({
+        'Poppins-Regular':require ("../assets/font/Poppins/Poppins-Regular.ttf"),
+        'Poppins-SemiBold': require ("../assets/font/Poppins/Poppins-SemiBold.ttf"),
+
+    });
+    
+      if (!isLoaded){
+        return null;
+      }
+
 
 
   // Input TextAlert
@@ -188,7 +201,7 @@ export default function Generate() {
     
    
     <SafeAreaView style = {generateStyle.mainContainer}>
-    
+    <ScrollView>
 
     {/* Section One */}
 
@@ -345,7 +358,7 @@ export default function Generate() {
         </View>
       </Modal>
 
-
+      </ScrollView>
     </SafeAreaView>
 
    

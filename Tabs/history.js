@@ -3,7 +3,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { FlatList } from 'react-native-gesture-handler';
 import { historyStyle } from './Style/historyStyle';
 import { useState } from 'react';
-
+import { useFonts } from 'expo-font';
 import {
   SafeAreaView,
   SafeAreaProvider,
@@ -37,6 +37,7 @@ export default function History() {
       {id:"12", link:"Link12" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
     ];
 
+  // Font
 
   // Change the Background and Borde Color base on status
   const getColorStatus = (state) =>{
@@ -111,6 +112,14 @@ export default function History() {
 
   // }
 
+    const [isLoaded] = useFonts({
+      'Poppins-Regular':require ("../assets/font/Poppins/Poppins-Regular.ttf"),
+    });
+
+    if (!isLoaded){
+      return null;
+    }
+
 
     const renderAllData = ({item}) => {
 
@@ -123,8 +132,8 @@ export default function History() {
         <View style = {historyStyle.leftHistory}>
           <Ionicons  name='person' size={18} color="#2FA0D8"/>
           <View style = {historyStyle.details}>
-            <Text> You scanned </Text>
-            <Text numberOfLines={1}> {item.link}</Text>
+            <Text style={historyStyle.introText}> You scanned </Text>
+            <Text style={historyStyle.linkText} numberOfLines={1}> {item.link}</Text>
           </View>
         </View>
 

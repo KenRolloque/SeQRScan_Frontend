@@ -37,7 +37,15 @@ const loginStyle = StyleSheet.create({
     image:{
         width:40, 
         height:40, 
-        borderWidth:1
+        borderWidth:1,
+     
+    },
+    contGoogle:{
+        width:"64%",
+        fontFamily:"Roboto-Regular",
+        fontSize:15,
+        
+
     }
 })
 

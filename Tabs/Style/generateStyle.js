@@ -27,7 +27,7 @@ const generateStyle = StyleSheet.create({
 
     },
     descContainerModal:{
-        width:"90%",
+        width:"100%",
         alignItems:"center",
         marginTop:10,
         marginBottom:10,
@@ -63,7 +63,8 @@ const generateStyle = StyleSheet.create({
         borderRadius:5,
         borderColor:"#A6A6A6",
         // fontFamily:"myFont",
-        color:"#706f6f"
+        color:"#706f6f",
+        fontFamily:"Poppins-Regular"
         
       
     },
@@ -77,7 +78,8 @@ const generateStyle = StyleSheet.create({
         borderColor:"#A6A6A6",
         // fontFamily:"myFont",
         color:"#706f6f",
-        height:400
+        height:400,
+        fontFamily:"Poppins-Regular"
   
         
  
@@ -102,6 +104,7 @@ const generateStyle = StyleSheet.create({
     
     clearText:{
         // fontFamily:"myFont"
+        fontFamily:"Poppins-Regular",
     },
     
     genButton:{
@@ -109,10 +112,12 @@ const generateStyle = StyleSheet.create({
         paddingVertical:10,
         paddingHorizontal:20,
         borderRadius:5,
+        
     },
 
     clearButtonText:{
         color:"white",
+        fontFamily:"Poppins-Regular",
         // fontFamily:"myFont"
     },disableDL:{
         backgroundColor:"#79F4D2"
@@ -173,11 +178,12 @@ const generateStyle = StyleSheet.create({
         flexDirection:"row",
         justifyContent:"center",
         borderRadius:5,
-        paddingVertical:50,
+        marginTop:20,
+        // paddingVertical:50,
         // backgroundColor:"#004594",
     },
     addBttn:{
-        backgroundColor:"red",
+        // backgroundColor:"red",
         flexDirection:"row",
         width:"35%",
         marginLeft:20,
@@ -192,43 +198,47 @@ const generateStyle = StyleSheet.create({
         width:"35%",
         alignItems:"center",
         justifyContent:"center",
-        paddingVertical:7,
+        paddingVertical:10,
         borderRadius:5,
         backgroundColor:"#1565C0"
 
 
     },dlBttn_label:{
         // color:"white"
-        fontFamily:"Poppins"
+        // fontFamily:"Poppins"
     },dlIcon:{
         marginTop:2,
-        marginRight:12,
+        marginRight:5,
     },addIcon:{
-        marginRight:12,
+        marginRight:15,
         marginLeft:30,
         
     },
     
     addBttn_label:{
         color:"white",
-        // fontFamily:"Poppins"
+        fontFamily:"Poppins-Regular",
+       
 
     },dlBttn_label:{
-        color:"white"
+        color:"white",
+        fontFamily:"Poppins-Regular"
         
     },
 
     centeredView: {
         flex: 1,
         // justifyContent: 'center',
-        backgroundColor: 'white',
+      
         alignItems: 'center',
         marginTop: 22,
+        backgroundColor:"#ffffff"
      
       },
       modalView: {
-        width:"100%",
-        flex:1,
+        width:"80%",
+        height:"75%",
+        // flex:1,
         // marginTop: 20,
         // backgroundColor: 'red',
         // paddingBottom:20,
@@ -268,7 +278,8 @@ const generateStyle = StyleSheet.create({
       },
       textStyle: {
         color: 'white',
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
+        fontFamily:"Poppins-Regular",
         width:"100%",
         textAlign: 'center',
         paddingVertical:10,
@@ -282,7 +293,7 @@ const generateStyle = StyleSheet.create({
 
 
       linkContainer:{
-        width:"90%",
+        width:"100%",
         // alignItems:"center",
         marginBottom:10,
         flexDirection:"row",
@@ -290,7 +301,7 @@ const generateStyle = StyleSheet.create({
         backgroundColor:"#f0f8ff",
         padding:10,
         borderRadius:10,
-        height:"50%"
+        height:"35%"
     },
 
     descContainer:{
@@ -324,15 +335,17 @@ const generateStyle = StyleSheet.create({
     },
     linkLabel:{
         fontSize:16,
-        fontWeight:"bold",
+        // fontWeight:"bold",
 
-        // fontFamily:"Poppins"
+        fontFamily:"Poppins-SemiBold",
+        color:"#4d4d4d"
 
 
     },
     link:{
         color:"#00BF63",
         width:"100%",
+        fontFamily:"Poppins-Regular"
 
        
         // fontFamily:"Poppins"
@@ -340,13 +353,16 @@ const generateStyle = StyleSheet.create({
     desc:{
         color:"#00BF63",
         width:"100%",
+        fontFamily:"Poppins-Regular"
+
 
 
     },
 
     descLabel:{
-        fontSize:16,
-        fontWeight:"bold"
+        fontSize:15,
+        fontFamily:"Poppins-SemiBold",
+        color:"#4d4d4d"
 
 
     },
@@ -355,10 +371,6 @@ const generateStyle = StyleSheet.create({
         backgroundColor:"none",
         width:"80%"
     }
-
-
-
-
 
 
 })

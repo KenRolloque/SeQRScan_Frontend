@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import {StyleSheet, View, Text, Dimensions, Platform,Image, TouchableOpacity, Button, Toast} from 'react-native';
+import {StyleSheet, View, Text, Dimensions, Platform,Image, TouchableOpacity, Button, Toast, Alert} from 'react-native';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Slider from '@react-native-community/slider';
@@ -192,14 +192,16 @@ export default function Scan() {
   if (hasCameraPermission === null) {
     return (
       <View>
-        <Text>Waiting for camera permissions</Text>
+        <Text style = {{flex:1}}>Waiting for camera permissions</Text>
       </View>
     );
   } else if (hasCameraPermission === false) {
     return (
-      <View >
-        <Text>No access to camera</Text>
-      </View>
+      // <View >
+      //   <Text>No access to camera</Text>
+      // </View>
+
+      alert(`No access to camera`)
     );
   } else {
     return (
