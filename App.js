@@ -3,7 +3,13 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Layout from './Navigation/layout'
 
+
+
+
 export default function App() {
+
+
+  
   return (
     <NavigationContainer>
     <Layout/>

@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity,FlatList, Image, ImageBackground, Modal, PixelRatio, ToastAndroid, ScrollView } from 'react-native';
+import { StyleSheet, TouchableOpacity,FlatList, Modal, ToastAndroid, ScrollView } from 'react-native';
 
 import { galleryStyle } from './Style/galleryStyle';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -11,13 +11,9 @@ import { View, Text } from 'react-native';
 
 import {
   SafeAreaView,
-  SafeAreaProvider,
-  SafeAreaInsetsContext,
-  useSafeAreaInsets,
+
 } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
-
-
 
 
 export default function Gallery() {
@@ -29,7 +25,7 @@ export default function Gallery() {
 
   const qrData = [
 
-    {id: '1', value:"QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12", description:"Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1",dates: new Date("2023-08-10")},
+    // {id: '1', value:"QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12", description:"Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1",dates: new Date("2023-08-10")},
     {id: '2', value:"QRCodeValue2", description:"Description 2",dates: new Date("2023-09-10")},
     {id: '3', value:"QRCodeValue3", description:"Description 3",dates: new Date("2023-10-10")},
     {id: '4', value:"QRCodeValue4", description:"Description 4",dates: new Date("2023-11-10")},

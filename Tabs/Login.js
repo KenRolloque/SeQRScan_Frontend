@@ -1,49 +1,104 @@
 import React, { Component } from 'react';
-import { View, Text,Alert,Button, TouchableOpacity, Image } from 'react-native';
-import Navigation from '../Navigation/navigation'
+import { View, Text,Alert,Button, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
-
-
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {loginStyle} from './Style/loginStyle'
 import { useFonts } from 'expo-font';
 
+import Navigation from '../Navigation/navigation';
+import SignInScreen from './signInScreen';
+
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithCredential,
+} from "firebase/auth";
+import { auth } from "../API/firebaseConfig";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { ActivityIndicator, View } from "react-native";
+
+WebBrowser.maybeCompleteAuthSession();
+
 const Login = ({navigation}) =>{
+  const [userInfo, setUserInfo] = React.useState();
+  const [loading, setLoading] = React.useState(false);
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+   
+    androidClientId: "919867402252-q2ia2lug6qga28nc2qsgmv7k3u98bqh9.apps.googleusercontent.com",
+  });
 
-    const signin = () =>{
-      navigation.navigate(Navigation);
+  const getLocalUser = async () => {
+    try {
+      setLoading(true);
+      const userJSON = await AsyncStorage.getItem("@user");
+      const userData = userJSON ? JSON.parse(userJSON) : null;
+      setUserInfo(userData);
+    } catch (e) {
+      console.log(e, "Error getting local user");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    const [isLoaded] = useFonts({
-      'Roboto-Regular':require ("../assets/font/Roboto/Roboto-Regular.ttf"),
-    
-    });
-  
-    if (!isLoaded){
-      return null;
-    }
-    
-    return (
-      <SafeAreaView style={loginStyle.mainContainer}>
+  const checkLocalUser = async()=>{
 
-          <View style={loginStyle.logoContainer}> 
-            <Ionicons name="qr-code-outline" size={80} color={"#004694"}/>
-            <Text style={loginStyle.logoText}> SeQRScan</Text>
-          </View>
-
-          
-          <TouchableOpacity style ={loginStyle.loginBttn} onPress={signin}>
-            <Image 
-                source={require("../components/images/google.png")}
-                style={{height: 25, width:25}}
-            />
-            <Text style ={loginStyle.contGoogle}> Continue with Google</Text>
-          </TouchableOpacity>
-         
-      </SafeAreaView>
+    try{
+      const userJSON = await AsyncStorage.getItem("@user");
+      const userData = userJSON ? JSON.parse(userJSON):null;
       
+      console.log("+",userData)
+    }catch(e){
+
+      alert.e(message);
+
+    }finally{
+
+    }
+  }
+
+  React.useEffect(() => {
+    if (response?.type === "success") {
+      const { id_token } = response.params;
+      const credential = GoogleAuthProvider.credential(id_token);
+      signInWithCredential(auth, credential);
+    }
+  }, [response]);
+
+
+
+  React.useEffect(() => {
+    getLocalUser();
+    const unsub = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await AsyncStorage.setItem("@user", JSON.stringify(user));
+        // console.log(JSON.stringify(user, null, 2));
+        setUserInfo(user);
+        // checkLocalUser();
+        console.log("Login: ", checkLocalUser());
+      } else {
+        console.log("user not authenticated");
+        console.log("Logout: ", checkLocalUser());
+
+      }
+    });
+    return () => unsub();
+  }, []);
+
+  if (loading)
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+             <ActivityIndicator size={"large"} />
+      </View>
     );
+
+
+
+    return userInfo ? <Navigation /> : <SignInScreen promptAsync={promptAsync} />;
+      
+   
   }
 
 

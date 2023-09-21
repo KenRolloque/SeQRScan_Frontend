@@ -23,3 +23,13 @@ npx expo install expo-camera
 // font
 npx expo install expo-font
 
+// Fire Base and Google Sign in
+npx expo install firebase expo-auth-session expo-crypto expo-web-browser expo-application @react-native-async-storage/async-storage expo-dev-client
+npx expo install expo-auth-session expo-crypto expo-web-browser
+npx expo install expo-application
+npx expo install @react-native-async-storage/async-storage
+npx expo install expo-dev-client
+npm install -g eas-cli
+npx expo install react-native-svg`
+
+#4d4d4d
