@@ -19,18 +19,13 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 
-
-
+import {app} from "../API/firebaseCRUD";
+import { doc, setDoc, Timestamp, getFirestore,collection, addDoc} from "firebase/firestore"; 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Generate() {
 
-    
-    // Export Font
 
-    
-
-
-    //
 
     // Description and URL
     const [desc, setDesc] = useState("");
@@ -108,17 +103,17 @@ export default function Generate() {
     };
 
 
-    const createQR = () =>{
-        try{
-            return(
-                <QRCode value ={inputText} size={200}/>
-            )
-        }catch(error){
+    // const createQR = () =>{
+    //     try{
+    //         return(
+    //             <QRCode value ={inputText} size={200}/>
+    //         )
+    //     }catch(error){
 
-            qrCodeAlert();
+    //         qrCodeAlert();
 
-        }
-    }
+    //     }
+    // }
 
     // Clear Inputs
 
@@ -185,15 +180,73 @@ export default function Generate() {
 
       };
 
-      const add = () => {
+      const add = async() => {
+
+        // getDate();
+        const db = getFirestore(app);
+
+        // try{
+            const userJSON = await AsyncStorage.getItem("@user");
+            const userData = userJSON ? JSON.parse(userJSON):null;
+
+            
+            // const userQRCode = doc (db, "qrCode/",userData.uid,)
+            // await setDoc(userQRCode,{
+                
+            //     userID: userData.uid,
+            //     qrCodeDescription:desc,
+            //     qrCodeContent:inputText,
+            //     // qrCodeDate: Timestamp.fromDate(new Date(getDate))
+                
+            // },);
+
+            const val = doc(db, "qrCode",userData.uid)
+            const ref = collection(val,"Generated")
+            await addDoc(ref,{
+                qrCodeContent:inputText,
+                qrCodeDescription:desc,
+                qrCodeDate:   Timestamp.fromDate(new Date()),
+
+            })
+
+            // const res = await db.collection('qrCode').doc(userData.uid).collection(collection4).add({
+
+            //     qrCodeDescription:desc,
+            //      qrCodeContent:inputText,
+            // });
+
+     
+        //   }catch{
+        //     console.log("Unable Error")
+      
+        //   }
+
+
+    
+
+
+        
         //function to make Toast With Duration And Gravity
-        // ToastAndroid.showWithGravity(
-        //   'Added to App Gallery',
-        //   ToastAndroid.SHORT, //can be SHORT, LONG
-        //   ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
-        // );
+        ToastAndroid.showWithGravity(
+          'Added to App Gallery',
+          ToastAndroid.SHORT, //can be SHORT, LONG
+          ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+        );
       };
 
+
+      const getDate = () =>{
+
+            const currentDate = new Date()
+
+            const localDate = currentDate.toLocaleDateString();
+            const localTime = currentDate.toLocaleTimeString()
+
+            return localDate
+      }
+
+
+    
 
   return (
 

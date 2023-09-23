@@ -6,7 +6,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {loginStyle} from './Style/loginStyle'
 import { useFonts } from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
-
+import {app} from "../API/firebaseCRUD";
+import { getFirestore, doc, setDoc  } from "firebase/firestore";
 
 const SignInScreen = ({promptAsync}) =>{
 
@@ -16,6 +17,7 @@ const SignInScreen = ({promptAsync}) =>{
        
       navigation.navigate(Navigation);
       promptAsync();
+
     }
 
 
@@ -29,7 +31,8 @@ const SignInScreen = ({promptAsync}) =>{
       return null;
     }
     
-
+    
+  
 
     return (
       <SafeAreaView style={loginStyle.mainContainer}>

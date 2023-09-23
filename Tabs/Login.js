@@ -16,6 +16,9 @@ import {
   signInWithCredential,
 } from "firebase/auth";
 import { auth } from "../API/firebaseConfig";
+import {app} from "../API/firebaseCRUD";
+
+import { getFirestore, doc, setDoc  } from "firebase/firestore";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { ActivityIndicator, View } from "react-native";
@@ -23,6 +26,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 WebBrowser.maybeCompleteAuthSession();
 
 const Login = ({navigation}) =>{
+
+  // User Data
+  const [userID, setUserID] = React.useState();
+  const [userName, setUserName] = React.useState();
+  const [userEmail, setUserEmail] = React.useState();
+  const db = getFirestore(app);
+
   const [userInfo, setUserInfo] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
@@ -48,13 +58,11 @@ const Login = ({navigation}) =>{
     try{
       const userJSON = await AsyncStorage.getItem("@user");
       const userData = userJSON ? JSON.parse(userJSON):null;
-      
-      console.log("+",userData)
-    }catch(e){
 
-      alert.e(message);
+    }catch{
 
-    }finally{
+      // alert.e(message);
+      console.log("Error")
 
     }
   }
@@ -64,8 +72,32 @@ const Login = ({navigation}) =>{
       const { id_token } = response.params;
       const credential = GoogleAuthProvider.credential(id_token);
       signInWithCredential(auth, credential);
+      
     }
+
+ 
   }, [response]);
+
+
+
+    const addUser = async () =>{
+
+      console.log("user")
+      try{
+        const userJSON = await AsyncStorage.getItem("@user");
+        const userData = userJSON ? JSON.parse(userJSON):null;
+  
+        await setDoc(doc(db, "users", userData.uid ),{
+  
+          userName: userData.displayName,
+          userEmail: userData.email,
+        });
+      }catch{
+        console.log("Unable Error")
+  
+      }
+  
+    }
 
 
 
@@ -76,11 +108,13 @@ const Login = ({navigation}) =>{
         await AsyncStorage.setItem("@user", JSON.stringify(user));
         // console.log(JSON.stringify(user, null, 2));
         setUserInfo(user);
+        addUser();
         // checkLocalUser();
-        console.log("Login: ", checkLocalUser());
+        // console.log("Login: ", checkLocalUser());
+     
       } else {
         console.log("user not authenticated");
-        console.log("Logout: ", checkLocalUser());
+        // console.log("Logout: ", checkLocalUser());
 
       }
     });
