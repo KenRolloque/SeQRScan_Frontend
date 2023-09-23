@@ -7,6 +7,7 @@ import Login from '../Tabs/Login';
 import Navigation from '../Navigation/navigation'
 import SafeScreen from '../Tabs/SafeScreen';
 import SuspiciousScreen from '../Tabs/SuspiciousScreen'
+
 // import Layout from '../Navigation/navigation';
 
 
@@ -20,6 +21,7 @@ const Layout = () =>{
         <Stack.Screen name="SafeScreen" component={SafeScreen} options={{ headerShown: true }}></Stack.Screen>
         <Stack.Screen name="SuspiciousScreen" component={SuspiciousScreen} options={{ headerShown: true }}></Stack.Screen>  
         <Stack.Screen name="Navigation" component={Navigation} options={{ headerShown: false }}></Stack.Screen>
+
       </Stack.Navigator>
     );
   }

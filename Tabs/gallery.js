@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity,FlatList, Image, ImageBackground, Modal, PixelRatio, ToastAndroid, ScrollView } from 'react-native';
+import { StyleSheet, TouchableOpacity,FlatList, Modal, ToastAndroid, ScrollView } from 'react-native';
 
 import { galleryStyle } from './Style/galleryStyle';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -7,29 +7,85 @@ import QRCode from 'react-native-qrcode-svg';
 import React, { useRef, useState } from 'react';
 import ViewShot, { captureRef } from 'react-native-view-shot';
 import * as MediaLibrary from "expo-media-library";
-import { View, Text } from 'react-native';
+import { View, Text, RefreshControl } from 'react-native';
 
 import {
   SafeAreaView,
-  SafeAreaProvider,
-  SafeAreaInsetsContext,
-  useSafeAreaInsets,
+
 } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
+import {app} from "../API/firebaseCRUD";
 
+import { doc,setDoc, Timestamp, getFirestore,collection, addDoc, getDocs} from "firebase/firestore"; 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
 export default function Gallery() {
 
+  const [refreshing, setRefreshing] = useState(true);
+  const [myData, setMyData] = useState();
 
+  React.useEffect(() => {
+
+   getData();
+  
+  }, []);
+
+  const getData = async() =>{
+
+    const db = getFirestore(app);
+
+      // try{
+      const userJSON = await AsyncStorage.getItem("@user");
+      const userData = userJSON ? JSON.parse(userJSON):null;
+    
+      const val = doc(db, "qrCode",userData.uid)
+      const ref = collection(val,"Generated")
+      const getValue = await getDocs(ref);
+ 
+      setMyData(getValue.docs.map((doc)=> ({...doc.data(), id:doc.id})))
+      setRefreshing(false);
+      // console.log(getValue.data())
+      // if (docSnap.exists()){
+ 
+      //  console.log("Document data:", docSnap.data());
+      // }else{
+      //  console.log("No such document!");
+      // }
+      // console.log(myData)
+      showData();
+ 
+
+  }
+ 
+
+  const onRefresh = () => {
+    //Clear old data of the list
+    setMyData([]);
+    //Call the Service to get the latest data
+    getData();
+  };
+
+  const showData = () =>{
+
+    //  const parseData =JSON.stringify(myData)
+    console.log("ID: ",myData)
+
+
+     
+      // console.log(parseData.id)
+      // console.log(qrCodeContent)
+  }
+
+  
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedQR, setSelectedQR] = useState(null);
 
 
   const qrData = [
 
-    {id: '1', value:"QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12", description:"Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1",dates: new Date("2023-08-10")},
+    // {id: '1', value:"QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12", description:"Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1",dates: new Date("2023-08-10")},
     {id: '2', value:"QRCodeValue2", description:"Description 2",dates: new Date("2023-09-10")},
     {id: '3', value:"QRCodeValue3", description:"Description 3",dates: new Date("2023-10-10")},
     {id: '4', value:"QRCodeValue4", description:"Description 4",dates: new Date("2023-11-10")},
@@ -42,7 +98,7 @@ export default function Gallery() {
   ];
 
   
-  const [sortedData, setSortedData] = useState(qrData)
+  const [sortedData, setSortedData] = useState(myData)
   const [ascending, setAscending] = useState(true);
   const [ascendingDate, setAscendingDate] = useState(true);
   const [showButtons, setShowButtons] = useState(false);
@@ -59,6 +115,11 @@ export default function Gallery() {
   if (!isLoaded){
     return null;
   }
+
+
+
+
+
 
   
   const downloadToast = async () => {
@@ -196,9 +257,9 @@ export default function Gallery() {
         <QRCode value ={item.value} size={30}/>
         
         <View  style = {galleryStyle.qrDesc}>
-            <Text numberOfLines={1} style ={galleryStyle.descText}> {item.description} </Text>
-            <Text numberOfLines={1} style ={galleryStyle.linkText}> {item.value} </Text>
-            <Text style ={galleryStyle.dateText}>{item.dates.toDateString()}</Text>
+            <Text numberOfLines={1} style ={galleryStyle.descText}> {item.qrCodeContent} </Text>
+            <Text numberOfLines={1} style ={galleryStyle.linkText}> {item.qrCodeDescription} </Text>
+            {/* <Text style ={galleryStyle.dateText}>{item.dates.toDateString()}</Text> */}
         </View>  
 
         <View style = {galleryStyle.qrAction}>
@@ -263,7 +324,7 @@ export default function Gallery() {
         <View style={galleryStyle.linkLabelContainer}>
 
           <Text style={galleryStyle.linkLabel}> Description </Text>
-          <Text  style={galleryStyle.desc} numberOfLines={2}>{selectedQR.description} </Text> 
+          <Text  style={galleryStyle.desc} numberOfLines={2}>{selectedQR.qrCodeDescription} </Text> 
       </View>
     </View>
 
@@ -277,7 +338,7 @@ export default function Gallery() {
         <View style={galleryStyle.linkLabelContainer}>
           <ScrollView style={{paddingRight:20}}>
               <Text style={galleryStyle.linkLabel}> Content </Text>
-              <Text  style={galleryStyle.link} >  {selectedQR.value}</Text> 
+              <Text  style={galleryStyle.link} >  {selectedQR.qrCodeContent}</Text> 
             </ScrollView>
         </View>
 
@@ -338,10 +399,18 @@ export default function Gallery() {
 
 
         <FlatList
-            data={sortedData}
+            data={myData}
+             keyExtractor={(item) => item.id}
             renderItem={renderQR}
-  
-           
+            refreshControl={
+              <RefreshControl
+                //refresh control used for the Pull to Refresh
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            }
+            // extraData={this.state}
+            
        />
         {renderButtonList()}
         </View>
