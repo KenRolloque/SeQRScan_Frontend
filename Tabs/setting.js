@@ -21,7 +21,7 @@ const Setting = () =>{
   
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
-  const [userPhoto, setUserPhoto] = useState(null);
+  const [userPhoto, setUserPhoto] = useState("");
 
   useEffect(() => {
     const checkLocalUser = async()=>{

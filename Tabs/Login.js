@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,Alert,Button, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text,Alert,Button, TouchableOpacity, Image, ActivityIndicator,ToastAndroid } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {loginStyle} from './Style/loginStyle'
@@ -68,11 +68,19 @@ const Login = ({navigation}) =>{
   }
 
   React.useEffect(() => {
+    
+    try{
     if (response?.type === "success") {
       const { id_token } = response.params;
       const credential = GoogleAuthProvider.credential(id_token);
       signInWithCredential(auth, credential);
       
+    }}catch(e){
+      ToastAndroid.showWithGravity(
+        'Failed to login. Please check your internet connection and try again.',
+        ToastAndroid.SHORT, //can be SHORT, LONG
+        ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+      );
     }
 
  
@@ -93,7 +101,7 @@ const Login = ({navigation}) =>{
           userEmail: userData.email,
         });
       }catch{
-        console.log("Unable Error")
+     
   
       }
   
