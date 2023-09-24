@@ -139,7 +139,7 @@ export default function Generate() {
 
         const { status } = await MediaLibrary.requestPermissionsAsync();
 
-
+        try{
 
         if (status === 'granted') {
 
@@ -171,11 +171,18 @@ export default function Generate() {
           }
 
         ToastAndroid.showWithGravity(
-          'Saved to Local Gallery',
+          'Saved to Local Gallery.',
           ToastAndroid.SHORT, //can be SHORT, LONG
           ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
         );
 
+      }catch(e){
+        ToastAndroid.showWithGravity(
+          'Failed to Local Gallery. Please try again.',
+          ToastAndroid.SHORT, //can be SHORT, LONG
+          ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+        )
+      }
 
 
       };
@@ -185,7 +192,7 @@ export default function Generate() {
         // getDate();
         const db = getFirestore(app);
 
-        // try{
+        try{
             const userJSON = await AsyncStorage.getItem("@user");
             const userData = userJSON ? JSON.parse(userJSON):null;
 
@@ -215,11 +222,21 @@ export default function Generate() {
             //      qrCodeContent:inputText,
             // });
 
+            ToastAndroid.showWithGravity(
+              'Saved to App Gallery',
+              ToastAndroid.SHORT, //can be SHORT, LONG
+              ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+            );
      
-        //   }catch{
-        //     console.log("Unable Error")
+          }catch(e){
+            console.log("Unable Error")
+            ToastAndroid.showWithGravity(
+              'Failed to saved in App Gallery. Please try again.',
+              ToastAndroid.SHORT, //can be SHORT, LONG
+              ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+            );
       
-        //   }
+          }
 
 
     
@@ -227,11 +244,7 @@ export default function Generate() {
 
         
         //function to make Toast With Duration And Gravity
-        ToastAndroid.showWithGravity(
-          'Added to App Gallery',
-          ToastAndroid.SHORT, //can be SHORT, LONG
-          ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
-        );
+
       };
 
 

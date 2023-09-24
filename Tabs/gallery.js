@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity,FlatList, Modal, ToastAndroid, ScrollView } from 'react-native';
+import { StyleSheet, TouchableOpacity,FlatList, Modal, ToastAndroid, ScrollView, Alert,PixelRatio  } from 'react-native';
 
 import { galleryStyle } from './Style/galleryStyle';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -16,8 +16,9 @@ import {
 import { useFonts } from 'expo-font';
 import {app} from "../API/firebaseCRUD";
 
-import { doc,setDoc, Timestamp, getFirestore,collection, addDoc, getDocs} from "firebase/firestore"; 
+import { doc,setDoc, Timestamp, getFirestore,collection, addDoc, getDocs, deleteDoc} from "firebase/firestore"; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { async } from '@firebase/util';
 
 
 
@@ -34,7 +35,10 @@ export default function Gallery() {
 
   const getData = async() =>{
 
-    const db = getFirestore(app);
+
+    try{
+
+      const db = getFirestore(app);
 
       // try{
       const userJSON = await AsyncStorage.getItem("@user");
@@ -46,6 +50,7 @@ export default function Gallery() {
  
       setMyData(getValue.docs.map((doc)=> ({...doc.data(), id:doc.id})))
       setRefreshing(false);
+      
       // console.log(getValue.data())
       // if (docSnap.exists()){
  
@@ -55,8 +60,45 @@ export default function Gallery() {
       // }
       // console.log(myData)
       showData();
+
+    }catch(e){
+
+      ToastAndroid.showWithGravity(
+        'Failed to Fetch Data. Please check you internet connection',
+        ToastAndroid.SHORT, //can be SHORT, LONG
+        ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+      );
+  
+
+    }
  
 
+  }
+
+  const deleteData = (item) =>{
+
+    Alert.alert(
+      //title
+      'Reminder',
+      //body
+      'Are you sure to delete this QR code?',
+      [
+        { text: 'Yes', onPress: () => deleteToast(item.id)},
+        {
+          text: 'No',
+          // onPress: () => console.log('No Pressed'),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false }
+
+    )
+    // await deleteDoc(doc(db, "qrCode", userData.uid, "Generated", item.id));
+
+    
+   
+    // const deleteDoc = await deleteDoc(ref);
+    // console.log(item.id,"Deleted Successfully")
   }
  
 
@@ -120,17 +162,46 @@ export default function Gallery() {
 
 
 
+  const deleteToast = async(item) =>{
 
+    try{
+
+    const db = getFirestore(app);
+
+    // try{
+    const userJSON = await AsyncStorage.getItem("@user");
+    const userData = userJSON ? JSON.parse(userJSON):null;
+  
+    
+    await deleteDoc(doc(db, "qrCode", userData.uid, "Generated", item))
+
+    ToastAndroid.showWithGravity(
+      'Deleted Successfully.',
+      ToastAndroid.SHORT, //can be SHORT, LONG
+      ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+    );
+
+  }catch(e){
+    ToastAndroid.showWithGravity(
+      'Failed to Delete the QR Code. Please check you internet connection',
+      ToastAndroid.SHORT, //can be SHORT, LONG
+      ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+    );
+
+  }
+
+  }
   
   const downloadToast = async () => {
     //function to make Toast With Duration And Gravity
 
+   
     const targetPixelCount = 2160;
     const pixelRatio = PixelRatio.get();
     const pixels = targetPixelCount / pixelRatio;
 
     const { status } = await MediaLibrary.requestPermissionsAsync();
-
+    try{
     if (status === 'granted') {
       if (viewShotRef.current) {
 
@@ -161,12 +232,15 @@ export default function Gallery() {
     }
 
 
+  }catch(e){
 
     ToastAndroid.showWithGravity(
-      'Saved to gallery.',
+      'Failed to saved in gallery.',
       ToastAndroid.SHORT, //can be SHORT, LONG
       ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
     );
+
+  }
   };
 
 
@@ -175,11 +249,24 @@ export default function Gallery() {
     try{
       
       const asset = await MediaLibrary.createAssetAsync(uri);
+
+      ToastAndroid.showWithGravity(
+        'Saved to gallery.',
+        ToastAndroid.SHORT, //can be SHORT, LONG
+        ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+      );
   
         console.log('QR Code PNG image saved:', asset.uri);
 
     }catch(error){
       console.error("Error Saving QR Code",error)
+
+      ToastAndroid.showWithGravity(
+        'Failed to saved in gallery.',
+        ToastAndroid.SHORT, //can be SHORT, LONG
+        ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+      );
+  
     }
   }
 
@@ -262,14 +349,14 @@ export default function Gallery() {
             {/* <Text style ={galleryStyle.dateText}>{item.dates.toDateString()}</Text> */}
         </View>  
 
-        <View style = {galleryStyle.qrAction}>
-            <TouchableOpacity>
+        {/* <View style = {galleryStyle.qrAction}>
+            <TouchableOpacity onPress={downloadToast}> 
                 <Ionicons name='download-outline' size={18} color="#737373"/>
             </TouchableOpacity>  
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=> deleteData(item)}>
                 <Ionicons name='trash-outline' size={18} color="#737373"/>
             </TouchableOpacity>  
-        </View>  
+        </View>   */}
 
         {selectedQR && ( 
 
@@ -353,7 +440,7 @@ export default function Gallery() {
            <Text style={galleryStyle.modalButtonDLLabel}>Download</Text>
        </TouchableOpacity>
 
-       <TouchableOpacity style={galleryStyle.modalButtonDel} >
+       <TouchableOpacity style={galleryStyle.modalButtonDel} onPress={ () => deleteData(selectedQR)} >
          <Text style={galleryStyle.modalButtonDLLabel}>Delete</Text>
        </TouchableOpacity>
    </View>
