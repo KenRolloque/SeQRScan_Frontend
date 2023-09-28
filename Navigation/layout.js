@@ -5,8 +5,9 @@ import { View, Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from '../Tabs/Login';
 import Navigation from '../Navigation/navigation'
-import SafeScreen from '../Tabs/SafeScreen';
-import SuspiciousScreen from '../Tabs/SuspiciousScreen'
+import SafeScreen from '../Tabs/Other/SafeScreen'
+import SuspiciousScreen from '../Tabs/Other/SuspiciousScreen';
+import Message from '../Tabs/Other/message';
 
 // import Layout from '../Navigation/navigation';
 
@@ -21,6 +22,7 @@ const Layout = () =>{
         <Stack.Screen name="SafeScreen" component={SafeScreen} options={{ headerShown: true }}></Stack.Screen>
         <Stack.Screen name="SuspiciousScreen" component={SuspiciousScreen} options={{ headerShown: true }}></Stack.Screen>  
         <Stack.Screen name="Navigation" component={Navigation} options={{ headerShown: false }}></Stack.Screen>
+        <Stack.Screen name="Message" component={Message} options={{ headerShown: true }}></Stack.Screen>
 
       </Stack.Navigator>
     );

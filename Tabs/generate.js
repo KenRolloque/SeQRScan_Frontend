@@ -103,19 +103,6 @@ export default function Generate() {
     };
 
 
-    // const createQR = () =>{
-    //     try{
-    //         return(
-    //             <QRCode value ={inputText} size={200}/>
-    //         )
-    //     }catch(error){
-
-    //         qrCodeAlert();
-
-    //     }
-    // }
-
-    // Clear Inputs
 
 
     const clearInput = async () =>{
@@ -196,16 +183,6 @@ export default function Generate() {
             const userJSON = await AsyncStorage.getItem("@user");
             const userData = userJSON ? JSON.parse(userJSON):null;
 
-            
-            // const userQRCode = doc (db, "qrCode/",userData.uid,)
-            // await setDoc(userQRCode,{
-                
-            //     userID: userData.uid,
-            //     qrCodeDescription:desc,
-            //     qrCodeContent:inputText,
-            //     // qrCodeDate: Timestamp.fromDate(new Date(getDate))
-                
-            // },);
 
             const val = doc(db, "qrCode",userData.uid)
             const ref = collection(val,"Generated")

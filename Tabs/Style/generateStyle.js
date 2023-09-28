@@ -57,6 +57,7 @@ const generateStyle = StyleSheet.create({
 
     descInput:{
         height: 45,
+     
         borderWidth: 1,
         padding: 10,
         marginBottom:10,
@@ -70,7 +71,7 @@ const generateStyle = StyleSheet.create({
     },
     
     textInput:{
-       
+        textAlignVertical:"top",
         borderWidth: 1,
         padding: 10,
         marginBottom:10,
