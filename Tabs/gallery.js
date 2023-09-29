@@ -389,7 +389,7 @@ export default function Gallery() {
      <View style={{backgroundColor:"#ffffff", padding:20}}>
 
          <QRCode 
-         value ={selectedQR.value}
+         value ={selectedQR.qrCodeContent}
          size={200}
          />
 
@@ -487,7 +487,7 @@ export default function Gallery() {
 
         <FlatList
             data={myData}
-             keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id}
             renderItem={renderQR}
             refreshControl={
               <RefreshControl

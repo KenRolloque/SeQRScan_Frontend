@@ -9,13 +9,22 @@ import * as ImagePicker from 'expo-image-picker';
 import { useIsFocused } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function Scan() {
+
+import SafeScreen from './Other/SafeScreen';
+import SuspiciousScreen from './Other/SuspiciousScreen';
+
+import {app} from "../API/firebaseCRUD";
+import { doc,setDoc, Timestamp, getFirestore,collection, addDoc, getDocs, deleteDoc} from "firebase/firestore"; 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export default function Scan({navigation}) {
 
 
   //  camera permissions
   const [hasCameraPermission, setHasCameraPermission] = useState (null);
   const [camera, setCamera] = useState(null);
   const isFocused = useIsFocused();
+  const [qrLabel, setQRLabel] =useState();
 
 
   // flashlight
@@ -42,6 +51,7 @@ export default function Scan() {
   const { height, width } = Dimensions.get('window');
   const screenRatio = height / width;
   const [isRatioSet, setIsRatioSet] =  useState(false);
+
 
   // on screen  load, ask for permission to use the camera
   useEffect(() => {
@@ -79,15 +89,143 @@ export default function Scan() {
   }
 
 
+const showDate = () =>{
 
+    const dateNow = new Date();
+    const time = dateNow.getHours()+":"+ dateNow.getMinutes()+":"+dateNow.getSeconds();
+    const date = dateNow.getFullYear()+dateNow.getMonth()+"-"+ dateNow.getDate();
+
+
+
+
+
+
+}
 
   // Scanning QR code
 
   const handleBarCodeScanned = ({ type, data }) => {
+    
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+
+
+    try{
+      url = Boolean (new URL("",data))
+      
+      alert(`${data} is a link`);
+      sendData(data)
+
+    }catch (e){
+      const status = "Message"
+      alert(`${data} is not link`);
+      sendServer(data, status)
+      console.log(e)
+    }
     
   };
+
+  const sendData = async(data) =>{
+
+    // console.log("Hello")
+
+    try{
+
+    console.log(data)
+
+    fetch('http://192.168.1.48:8000/validationServer/validate/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        
+      },
+      body: JSON.stringify({
+        url: data
+      })
+    })
+    .then((response) => response.json())
+    .then((json) => getResponse(json,data))
+    .catch((error) => console.error(error));
+ 
+    } catch (error) {
+      console.error(error);
+    }
+}
+
+
+
+const getResponse = async (json,data) =>{
+
+  // const count = JSON.parse(json);
+
+  console.log("get response")
+
+  try{
+    if (json.result == 1){
+      const status = "Safe"
+      console.log("Safe")
+      sendServer(data, status)
+      navigation.navigate('SafeScreen', {
+        
+          link:data
+      })
+
+      
+      
+    }else{
+      const status = "Suspicious"
+      sendServer(data,status)
+      console.log("Suspicious")
+      navigation.navigate('SuspiciousScreen', {
+        
+        link:data
+    })                                                                                                        
+    }
+
+
+
+  }catch(e){
+
+
+    }
+
+}
+
+const sendServer = async (data, status) =>{
+
+  try{
+
+  const dateNow = new Date();
+  const time = dateNow.getHours()+":"+ dateNow.getMinutes()+":"+dateNow.getSeconds();
+  const date = dateNow.getMonth()+"-"+ dateNow.getDate()+"-"+dateNow.getFullYear();
+    
+
+  const db = getFirestore(app);
+  const userJSON = await AsyncStorage.getItem("@user");
+  const userData = userJSON ? JSON.parse(userJSON):null;
+
+
+  const val = doc(db, "qrCodeHistory",userData.uid)
+  const ref = collection(val,"Generated")
+  console.log(date)
+  await addDoc(ref,{
+    qrCodeContent:data,
+    qrCodeStatus:status,
+    qrCodeDate: date,
+    qrCodeTime: time,
+
+})
+
+console.log("Saved")
+}catch(e){
+
+  console.log(e)
+
+}
+
+
+}
+
 
 
   
@@ -109,15 +247,25 @@ export default function Scan() {
       
         const results = await BarCodeScanner.scanFromURLAsync(result.assets[0].uri)
         const qrCodeDataStrings = results.map(qrCode => qrCode.data);
-
-        console.log(results);
-
-        alert(`Data ${qrCodeDataStrings} has been scanned!`);
-
+        const data = qrCodeDataStrings.toString();
       
-
-
-
+        console.log(data)
+        // alert(`Data ${qrCodeDataStrings} has been scanned!`);
+        try{
+          url = Boolean (new URL("",data))
+          alert(`${data} is a link`);
+          sendData(data)
+    
+        }catch (e){
+          alert(`${data} is not link`);
+          const status = "Message"
+          sendServer(data, status)
+          navigation.navigate("Message", {
+        
+            message:data
+        })
+         
+        }
       
      } catch(error){
       console.debug(error)
@@ -125,18 +273,6 @@ export default function Scan() {
 
     };
 
-
-  // set the camera ratio and padding.
-  // this code assumes a portrait mode screen
-
-
-  // useEffect(() => {
-  //   async function getCameraStatus() {
-  //     const { status } = await Camera.requestCameraPermissionsAsync();
-  //     setHasCameraPermission(status == 'granted');
-  //   }
-  //   getCameraStatus();
-  // }, []);
 
   // useEffect(() => {
   const prepareRatio = async () => {
@@ -274,8 +410,10 @@ export default function Scan() {
 
 
                 </View>
-
-
+                <Button title='Message'  onPress={ () => navigation.navigate('Message',{link:"https://www.facebook.com/"})}/>
+                <Button title='Suspicious'  onPress={ () => navigation.navigate('SuspiciousScreen',{link:"https://www.facebook.com/"})}/>
+                <Button title='Safe'  onPress={ () => navigation.navigate('SafeScreen',{link:"https://www.facebook.com/"})}/>
+                <Button title='Date' onPress = {showDate}/>
         </Camera>
   }
                 {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
