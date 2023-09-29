@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import {StyleSheet, View, Text, Dimensions, Platform,Image, TouchableOpacity, Button, Toast, Alert} from 'react-native';
+import {StyleSheet, View, Text, Dimensions, Platform,Image, ToastAndroid,TouchableOpacity, Button, Toast, Alert, ActivityIndicator} from 'react-native';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Slider from '@react-native-community/slider';
@@ -25,6 +25,7 @@ export default function Scan({navigation}) {
   const [camera, setCamera] = useState(null);
   const isFocused = useIsFocused();
   const [qrLabel, setQRLabel] =useState();
+
 
 
   // flashlight
@@ -89,17 +90,35 @@ export default function Scan({navigation}) {
   }
 
 
+  const showActivity = () =>{
+    return(
+      <View style={{
+            flex:1, 
+            justifyContent: 'center',
+            alignItems:"center",
+            backgroundColor:"#ffffff"
+            }}>
+
+            <ActivityIndicator  size="large"/>
+      </View>
+    )
+  }
+
 const showDate = () =>{
 
     const dateNow = new Date();
     const time = dateNow.getHours()+":"+ dateNow.getMinutes()+":"+dateNow.getSeconds();
     const date = dateNow.getFullYear()+dateNow.getMonth()+"-"+ dateNow.getDate();
 
+}
 
-
-
-
-
+const pleaseWait = () =>{
+  
+  ToastAndroid.showWithGravity(
+    'The URL is validating please wait.',
+    ToastAndroid.SHORT, //can be SHORT, LONG
+    ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+  );
 }
 
   // Scanning QR code
@@ -111,13 +130,12 @@ const showDate = () =>{
 
     try{
       url = Boolean (new URL("",data))
+      // alert(`${data} is a link`);
       
-      alert(`${data} is a link`);
       sendData(data)
 
     }catch (e){
       const status = "Message"
-      alert(`${data} is not link`);
       sendServer(data, status)
       console.log(e)
     }
@@ -126,13 +144,14 @@ const showDate = () =>{
 
   const sendData = async(data) =>{
 
-    // console.log("Hello")
+    console.log("Hello")
+    pleaseWait();
 
     try{
 
     console.log(data)
 
-    fetch('http://192.168.1.48:8000/validationServer/validate/', {
+    fetch('http://192.168.1.50:8000/validationServer/validate/', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -145,19 +164,17 @@ const showDate = () =>{
     })
     .then((response) => response.json())
     .then((json) => getResponse(json,data))
-    .catch((error) => console.error(error));
+    .catch((error) => console.error("Error"));
  
     } catch (error) {
       console.error(error);
+      console.log("Error")
     }
 }
 
 
 
 const getResponse = async (json,data) =>{
-
-  // const count = JSON.parse(json);
-
   console.log("get response")
 
   try{
@@ -165,6 +182,7 @@ const getResponse = async (json,data) =>{
       const status = "Safe"
       console.log("Safe")
       sendServer(data, status)
+
       navigation.navigate('SafeScreen', {
         
           link:data
@@ -176,6 +194,7 @@ const getResponse = async (json,data) =>{
       const status = "Suspicious"
       sendServer(data,status)
       console.log("Suspicious")
+  
       navigation.navigate('SuspiciousScreen', {
         
         link:data
@@ -226,11 +245,6 @@ console.log("Saved")
 
 }
 
-
-
-  
-
-
     // Upload Image
     const pickImage = async () => {
       // No permissions request is necessary for launching the image library
@@ -249,15 +263,13 @@ console.log("Saved")
         const qrCodeDataStrings = results.map(qrCode => qrCode.data);
         const data = qrCodeDataStrings.toString();
       
-        console.log(data)
+        console.log("Pick Image",data)
         // alert(`Data ${qrCodeDataStrings} has been scanned!`);
         try{
           url = Boolean (new URL("",data))
-          alert(`${data} is a link`);
           sendData(data)
     
         }catch (e){
-          alert(`${data} is not link`);
           const status = "Message"
           sendServer(data, status)
           navigation.navigate("Message", {
@@ -410,10 +422,10 @@ console.log("Saved")
 
 
                 </View>
-                <Button title='Message'  onPress={ () => navigation.navigate('Message',{link:"https://www.facebook.com/"})}/>
+                {/* <Button title='Message'  onPress={ () => navigation.navigate('Message',{link:"https://www.facebook.com/"})}/>
                 <Button title='Suspicious'  onPress={ () => navigation.navigate('SuspiciousScreen',{link:"https://www.facebook.com/"})}/>
                 <Button title='Safe'  onPress={ () => navigation.navigate('SafeScreen',{link:"https://www.facebook.com/"})}/>
-                <Button title='Date' onPress = {showDate}/>
+                <Button title='Date' onPress = {showDate}/> */}
         </Camera>
   }
                 {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}

@@ -36,8 +36,7 @@ const Login = ({navigation}) =>{
   const [userInfo, setUserInfo] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-   
-    androidClientId: "919867402252-q2ia2lug6qga28nc2qsgmv7k3u98bqh9.apps.googleusercontent.com",
+    androidClientId: "919867402252-t2hf11r1ff9mvj1d7akb5go417b0mtvf.apps.googleusercontent.com",
   });
 
   const getLocalUser = async () => {

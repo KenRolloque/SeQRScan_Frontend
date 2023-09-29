@@ -16,7 +16,7 @@ import {
 import { useFonts } from 'expo-font';
 import {app} from "../API/firebaseCRUD";
 
-import { doc,setDoc, Timestamp, getFirestore,collection, addDoc, getDocs, deleteDoc} from "firebase/firestore"; 
+import { doc,setDoc, Timestamp, getFirestore,collection, addDoc, getDocs, deleteDoc, onSnapshot} from "firebase/firestore"; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { async } from '@firebase/util';
 
@@ -36,7 +36,7 @@ export default function Gallery() {
   const getData = async() =>{
 
 
-    try{
+    // try{
 
       const db = getFirestore(app);
 
@@ -50,28 +50,7 @@ export default function Gallery() {
  
       setMyData(getValue.docs.map((doc)=> ({...doc.data(), id:doc.id})))
       setRefreshing(false);
-      
-      // console.log(getValue.data())
-      // if (docSnap.exists()){
- 
-      //  console.log("Document data:", docSnap.data());
-      // }else{
-      //  console.log("No such document!");
-      // }
-      // console.log(myData)
-      showData();
 
-    }catch(e){
-
-      ToastAndroid.showWithGravity(
-        'Failed to Fetch Data. Please check you internet connection',
-        ToastAndroid.SHORT, //can be SHORT, LONG
-        ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
-      );
-  
-
-    }
- 
 
   }
 
@@ -111,7 +90,7 @@ export default function Gallery() {
 
   const showData = () =>{
 
-    //  const parseData =JSON.stringify(myData)
+  
     console.log("ID: ",myData)
 
 

@@ -7,6 +7,13 @@ npx expo install expo-image
 npm install axios
 
 
+npx expo install react-native-safe-area-context react-native-gesture-handler expo-linear-gradient react-native-svg react-native-screens
+npx expo install react-native-gesture-handler
+npx expo install expo-linear-gradient
+npx expo install react-native-svg
+npx expo install react-native-screens
+
+
 // Scan
 npx expo install @react-native-community/slider
 npx expo install expo-barcode-scanner

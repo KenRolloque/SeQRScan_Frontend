@@ -75,7 +75,7 @@ const Setting = () =>{
             <View style={settingStyle.imgContainer}>
               <Image
 
-                  source={{uri:userPhoto}}
+                  source={userPhoto ? {uri:userPhoto}:null}
                   style={settingStyle.userImg}
               />
 
@@ -93,7 +93,6 @@ const Setting = () =>{
          style ={settingStyle.logout}
          onPress={
             async() => {
-              console.log("Hello");
               await signOut (auth);
               await AsyncStorage.removeItem("@user");      
               NativeModules.DevSettings.reload();

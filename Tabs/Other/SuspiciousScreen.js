@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { suspiciousStyle } from './suspiciousStyle';
 import { View, Text, ImageBackground, TouchableOpacity, Linking } from 'react-native';
-
 import { Ionicons } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard'
-
 const SuspiciousScreen = ({route,navigation}) =>   {
 
 
-
+  const {link} = route.params;
   const redirect = () =>{
 
     Alert.alert(
@@ -25,12 +23,11 @@ const SuspiciousScreen = ({route,navigation}) =>   {
           },
         ],
         { cancelable: false }
-        //clicking out side of alert will not cancel
       );
 
 }
 
-  const {link} = route.params;
+
   const copyToClipboard = async () => {
       await Clipboard.setStringAsync(link);
       ToastAndroid.show('Copy to clipboard', ToastAndroid.SHORT);
