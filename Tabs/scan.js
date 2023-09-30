@@ -183,8 +183,6 @@ const sendServer = async (data, status) =>{
   const showMonth = dateNow.getMonth()+1;
   const date = showMonth+"-"+ dateNow.getDate()+"-"+dateNow.getFullYear();
   
-
-
   const db = getFirestore(app);
   const userJSON = await AsyncStorage.getItem("@user");
   const userData = userJSON ? JSON.parse(userJSON):null;
