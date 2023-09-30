@@ -22,25 +22,36 @@ import { async } from '@firebase/util';
 
 
 
-export default function Gallery() {
+export default function Gallery({navigation}) {
+
+
 
   const [refreshing, setRefreshing] = useState(true);
   const [myData, setMyData] = useState();
+  const [updateData, setUpdateData] = useState();
+  const [extraD, setExtraD] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedQR, setSelectedQR] = useState(null);
+  const [showButtons, setShowButtons] = useState(false);
+  const viewShotRef = useRef(null);
 
   React.useEffect(() => {
 
-   getData();
+    const interval = setInterval(() =>{
+
+      getData();
+    },3000
+
+    )
+   
+    return () =>  clearInterval(interval);
   
   }, []);
 
   const getData = async() =>{
 
 
-    // try{
-
       const db = getFirestore(app);
-
-      // try{
       const userJSON = await AsyncStorage.getItem("@user");
       const userData = userJSON ? JSON.parse(userJSON):null;
     
@@ -48,83 +59,63 @@ export default function Gallery() {
       const ref = collection(val,"Generated")
       const getValue = await getDocs(ref);
  
-      setMyData(getValue.docs.map((doc)=> ({...doc.data(), id:doc.id})))
+      const responseData = getValue.docs.reverse().map((doc)=> ({...doc.data(), id:doc.id}))
+
+      setMyData(responseData)
       setRefreshing(false);
 
+  }
+
+
+  React.useEffect(() => {
+
+    updateDate();
+
+   
+   }, []);
+
+   const updateDate = async() =>{
+
+      const db = getFirestore(app);
+      const userJSON = await AsyncStorage.getItem("@user");
+      const userData = userJSON ? JSON.parse(userJSON):null;
+    
+      const val = doc(db, "qrCode",userData.uid)
+      const ref = collection(val,"Generated")
+      const getValue = await getDocs(ref);
+      const responseData = getValue.docs.map((doc)=> ({...doc.data(), id:doc.id}))
+
+      setUpdateData(responseData)
+      console.log("Update: ",updateData)
+      setExtraD((prevExtraData) => !prevExtraData);
+      console.log("Extra Data",extraD)
 
   }
+
+
 
   const deleteData = (item) =>{
 
     Alert.alert(
-      //title
       'Reminder',
-      //body
       'Are you sure to delete this QR code?',
       [
         { text: 'Yes', onPress: () => deleteToast(item.id)},
         {
           text: 'No',
-          // onPress: () => console.log('No Pressed'),
           style: 'cancel',
         },
       ],
       { cancelable: false }
 
     )
-    // await deleteDoc(doc(db, "qrCode", userData.uid, "Generated", item.id));
-
-    
-   
-    // const deleteDoc = await deleteDoc(ref);
-    // console.log(item.id,"Deleted Successfully")
   }
  
 
-  const onRefresh = () => {
-    //Clear old data of the list
+  const onRefresh = () => {t
     setMyData([]);
-    //Call the Service to get the latest data
     getData();
   };
-
-  const showData = () =>{
-
-  
-    console.log("ID: ",myData)
-
-
-     
-      // console.log(parseData.id)
-      // console.log(qrCodeContent)
-  }
-
-  
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedQR, setSelectedQR] = useState(null);
-
-
-  const qrData = [
-
-    // {id: '1', value:"QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12QRCodeValue12", description:"Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1Description 1",dates: new Date("2023-08-10")},
-    {id: '2', value:"QRCodeValue2", description:"Description 2",dates: new Date("2023-09-10")},
-    {id: '3', value:"QRCodeValue3", description:"Description 3",dates: new Date("2023-10-10")},
-    {id: '4', value:"QRCodeValue4", description:"Description 4",dates: new Date("2023-11-10")},
-    {id: '5', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
-    {id: '6', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
-    {id: '7', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
-    {id: '8', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
-    {id: '9', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
-    {id: '10', value:"QRCodeValue5", description:"Description 5",dates: new Date("2023-12-10")},
-  ];
-
-  
-  const [sortedData, setSortedData] = useState(myData)
-  const [ascending, setAscending] = useState(true);
-  const [ascendingDate, setAscendingDate] = useState(true);
-  const [showButtons, setShowButtons] = useState(false);
-
-  const viewShotRef = useRef(null);
 
   // Font
 
@@ -138,16 +129,11 @@ export default function Gallery() {
   }
 
 
-
-
-
   const deleteToast = async(item) =>{
 
     try{
 
     const db = getFirestore(app);
-
-    // try{
     const userJSON = await AsyncStorage.getItem("@user");
     const userData = userJSON ? JSON.parse(userJSON):null;
   
@@ -159,7 +145,9 @@ export default function Gallery() {
       ToastAndroid.SHORT, //can be SHORT, LONG
       ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
     );
-
+    updateDate();
+    navigation.goBack();
+    
   }catch(e){
     ToastAndroid.showWithGravity(
       'Failed to Delete the QR Code. Please check you internet connection',
@@ -172,9 +160,6 @@ export default function Gallery() {
   }
   
   const downloadToast = async () => {
-    //function to make Toast With Duration And Gravity
-
-   
     const targetPixelCount = 2160;
     const pixelRatio = PixelRatio.get();
     const pixels = targetPixelCount / pixelRatio;
@@ -199,12 +184,8 @@ export default function Gallery() {
     
         }catch (error){
           console.error("Error Capturing QR Code",error)
-  
-  
-        }
-    
-    
-        }
+
+        } }
       
     } else {
       console.error('Permission to save to media library denied');
@@ -250,69 +231,11 @@ export default function Gallery() {
   }
 
 
-    // Sort Data Function
-
-    const toggleSorting = () =>{
-
-      setAscending(!ascending);
-  
-      const sortedArray = [...sortedData].sort((a,b) =>
-      
-      ascending ? a.value.localeCompare(b.value) :
-      b.value.localeCompare(a.value)
-  
-      );
-      setSortedData(sortedArray);
-      setShowButtons(!showButtons);
-    }
-  
-    const toggleSortingDate = () =>{
-      console.log("hello");
-      setAscendingDate(!ascendingDate);
-  
-      const sortedArray = [...sortedData].sort((a,b) =>
-      
-      ascendingDate ? a.dates-b.dates :
-      b.dates-a.dates
-  
-      );
-      setSortedData(sortedArray);
-      setShowButtons(!showButtons);
-    }
-
-
-      // Render Button List
-
-  const toggleButtonList = () => {
-    setShowButtons(!showButtons);
-  };
-
-  const renderButtonList = () => {
-    if (showButtons) {
-      return (
-        <View style={galleryStyle.bttnListCont}>
-
-          <TouchableOpacity style={galleryStyle.bttn1} onPress={toggleSorting}>
-            <Text>Description</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={galleryStyle.bttn2} onPress={toggleSortingDate}>
-            <Text>Date</Text>
-          </TouchableOpacity>
-          {/* Add more buttons as needed */}
-        </View>
-      );
-    } else {
-      return null;
-    }
-  };
-
-
   const renderQR = ({item, index}) => {
+    
     const itemStyle = index % 2 === 0 ? galleryStyle.qrOdd : galleryStyle.qrEven;
 
     return(
-
 
     <TouchableOpacity  
             style = {[galleryStyle.qrItem, itemStyle]}
@@ -323,19 +246,10 @@ export default function Gallery() {
         <QRCode value ={item.value} size={30}/>
         
         <View  style = {galleryStyle.qrDesc}>
-            <Text numberOfLines={1} style ={galleryStyle.descText}> {item.qrCodeContent} </Text>
-            <Text numberOfLines={1} style ={galleryStyle.linkText}> {item.qrCodeDescription} </Text>
+            <Text numberOfLines={1} style ={galleryStyle.descText}>{item.qrCodeDescription}  </Text>
+            <Text numberOfLines={1} style ={galleryStyle.linkText}> {item.qrCodeContent} </Text>
             {/* <Text style ={galleryStyle.dateText}>{item.dates.toDateString()}</Text> */}
         </View>  
-
-        {/* <View style = {galleryStyle.qrAction}>
-            <TouchableOpacity onPress={downloadToast}> 
-                <Ionicons name='download-outline' size={18} color="#737373"/>
-            </TouchableOpacity>  
-            <TouchableOpacity onPress={()=> deleteData(item)}>
-                <Ionicons name='trash-outline' size={18} color="#737373"/>
-            </TouchableOpacity>  
-        </View>   */}
 
         {selectedQR && ( 
 
@@ -375,12 +289,9 @@ export default function Gallery() {
      </View>
 
    </ViewShot>
-
+    <Text>Created </Text>
    </View>
-     {/* <Text style={galleryStyle.modalValue}>{selectedQR.description}</Text>
-     <Text style={galleryStyle.modalValue}>{selectedQR.value}</Text> */}
 
-    
     <View style={galleryStyle.descContainer}>
 
         <View style={galleryStyle.linkIconContainer}>
@@ -427,9 +338,7 @@ export default function Gallery() {
 </View>
 </Modal>    
 )}
-          
-
-               
+                 
    </TouchableOpacity> 
 
 );
@@ -437,48 +346,25 @@ export default function Gallery() {
 };
 
 
-
-
   return (
     
     <SafeAreaView style={galleryStyle.mainContainer}>
-    
-
-        <View style = {galleryStyle.sectionOne}>
-                      
-          <Text style = {galleryStyle.title}> QR Code</Text>
-
-          <View style = {galleryStyle.bttnCont}>
-
-           <TouchableOpacity style = {galleryStyle.listBttn} >
-              <Ionicons name='list-outline' size={18}  />
-            </TouchableOpacity>
-
-            <TouchableOpacity style = {galleryStyle.sortBttn} onPress={toggleButtonList}>
-              <Ionicons name='funnel-outline' size={18} />
-            </TouchableOpacity>
-
-          </View>
-        </View>
 
         <View style = {galleryStyle.qrGallery}>
-
 
         <FlatList
             data={myData}
             keyExtractor={(item) => item.id}
             renderItem={renderQR}
+            extraData ={extraD}
             refreshControl={
               <RefreshControl
-                //refresh control used for the Pull to Refresh
                 refreshing={refreshing}
                 onRefresh={onRefresh}
               />
-            }
-            // extraData={this.state}
-            
+            } 
        />
-        {renderButtonList()}
+
         </View>
     </SafeAreaView>
   );
