@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { Component, useEffect, useState } from 'react';
 import { View, Text,TouchableOpacity,NativeModules, Image } from 'react-native';
 import {auth} from '../API/firebaseConfig'
@@ -47,11 +46,7 @@ const Setting = () =>{
     }
     checkLocalUser();
   }, []);
-    const navigation = useNavigation()
-    
-    const logout = () =>{
 
-    }
 
     const [isLoaded] = useFonts({
       'Poppins-Regular':require ("../assets/font/Poppins/Poppins-Regular.ttf"),

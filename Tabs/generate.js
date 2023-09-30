@@ -5,7 +5,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React, {useRef, useState} from 'react';
 import QRCode from 'react-native-qrcode-svg';
-
+import Moment  from 'moment';
 import * as MediaLibrary from "expo-media-library";
 import ViewShot from 'react-native-view-shot';
 import { captureRef } from 'react-native-view-shot';
@@ -95,15 +95,8 @@ export default function Generate() {
     
                 setModalVisible(true)
                 // setShouldShow(true); // Show the QR code when the "Generate" button is pressed
-            }
-
-      
-
-      
+            }    
     };
-
-
-
 
     const clearInput = async () =>{
 
@@ -178,6 +171,13 @@ export default function Generate() {
 
         // getDate();
         const db = getFirestore(app);
+        const idDate = Moment().format();
+        const stringDate = idDate.toString();
+
+        const dateNow = new Date();
+        const time = dateNow.getHours()+":"+ dateNow.getMinutes()+":"+dateNow.getSeconds();
+        const showMonth = dateNow.getMonth()+1;
+        const date = showMonth+"-"+ dateNow.getDate()+"-"+dateNow.getFullYear();
 
         try{
             const userJSON = await AsyncStorage.getItem("@user");
@@ -186,19 +186,14 @@ export default function Generate() {
 
             const val = doc(db, "qrCode",userData.uid)
             const ref = collection(val,"Generated")
-            await addDoc(ref,{
+
+            await setDoc(doc(db,"qrCode",userData.uid,"Generated",stringDate),{
                 qrCodeContent:inputText,
                 qrCodeDescription:desc,
-                qrCodeDate:   Timestamp.fromDate(new Date()),
-
-            })
-
-            // const res = await db.collection('qrCode').doc(userData.uid).collection(collection4).add({
-
-            //     qrCodeDescription:desc,
-            //      qrCodeContent:inputText,
-            // });
-
+                qrCodeDate: date,
+                qrCodeTime:time,
+          
+          })
             ToastAndroid.showWithGravity(
               'Saved to App Gallery',
               ToastAndroid.SHORT, //can be SHORT, LONG
@@ -212,31 +207,7 @@ export default function Generate() {
               ToastAndroid.SHORT, //can be SHORT, LONG
               ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
             );
-      
-          }
-
-
-    
-
-
-        
-        //function to make Toast With Duration And Gravity
-
-      };
-
-
-      const getDate = () =>{
-
-            const currentDate = new Date()
-
-            const localDate = currentDate.toLocaleDateString();
-            const localTime = currentDate.toLocaleTimeString()
-
-            return localDate
-      }
-
-
-    
+          }};
 
   return (
 

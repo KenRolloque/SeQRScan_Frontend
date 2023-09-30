@@ -65,7 +65,8 @@ const historyStyle = StyleSheet.create({
         marginTop:10,
         backgroundColor:"#E4FFF2",
         borderStartWidth:5,
-        borderStartColor:"#25C196"
+        borderStartColor:"#25C196",
+        borderRadius:5
 
     },
     leftHistory:{
@@ -86,10 +87,11 @@ const historyStyle = StyleSheet.create({
     },
 
     rightHistory:{
-        marginRight:20,
+     
         backgroundColor:"none",
-        alignItems:"flex-end",
-        // borderWidth:1
+       
+        width:"30%",
+        
        
     },
 
@@ -107,9 +109,12 @@ const historyStyle = StyleSheet.create({
 
     },
     historyDate:{
-
+     
+        textAlign:"center",
+        fontSize:12,
         fontFamily:"Poppins-Regular",
-        color:"#4d4d4d"
+        color:"#4d4d4d",
+        
 
     },
     listHistory2:{

@@ -6,7 +6,8 @@ const galleryStyle = StyleSheet.create({
     mainContainer:{
         backgroundColor:"#ffffff",
         flex:1,
-        alignItems:"center"
+        alignItems:"center",    
+
 
     },sectionOne:{
         width:"90%",
@@ -56,8 +57,8 @@ const galleryStyle = StyleSheet.create({
     },
     qrGallery:{
         width:"90%",
-        // borderWidth:1,
-        marginTop:20,
+
+
         marginBottom:40,
 
     },qrItem:{
@@ -137,9 +138,11 @@ const galleryStyle = StyleSheet.create({
         fontFamily:"Poppins-SemiBold",
         // fontWeight:"bold",
         color:"#4d4d4d",
-        fontSize:15
+        fontSize:15,
+       
     },
     linkText:{
+   
         fontFamily:"Poppins-Regular",
         color:"#4d4d4d"
 
@@ -196,7 +199,8 @@ const galleryStyle = StyleSheet.create({
         flexDirection:"row",
         justifyContent:"center",
         backgroundColor:"none",
-        marginTop:"10%"
+        marginTop:"10%",
+
         
     },
 

@@ -8,6 +8,7 @@ import Navigation from '../Navigation/navigation'
 import SafeScreen from '../Tabs/Other/SafeScreen'
 import SuspiciousScreen from '../Tabs/Other/SuspiciousScreen';
 import Message from '../Tabs/Other/message';
+import Sample from '../Tabs/sample';
 
 // import Layout from '../Navigation/navigation';
 
@@ -23,6 +24,7 @@ const Layout = () =>{
         <Stack.Screen name="SuspiciousScreen" component={SuspiciousScreen} options={{ headerShown: true }}></Stack.Screen>  
         <Stack.Screen name="Navigation" component={Navigation} options={{ headerShown: false }}></Stack.Screen>
         <Stack.Screen name="Message" component={Message} options={{ headerShown: true }}></Stack.Screen>
+        <Stack.Screen name="Sample" component={Sample} options={{ headerShown: true }}></Stack.Screen>
 
       </Stack.Navigator>
     );

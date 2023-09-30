@@ -4,6 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { historyStyle } from './Style/historyStyle';
 import { useState, useEffect } from 'react';
 import { useFonts } from 'expo-font';
+import Moment from 'moment';
 import {
   SafeAreaView,
   SafeAreaProvider,
@@ -13,7 +14,7 @@ import {
 
 import {app} from "../API/firebaseCRUD";
 
-import { doc,setDoc, Timestamp, getFirestore,collection, addDoc, getDocs, deleteDoc, onSnapshot} from "firebase/firestore"; 
+import { doc,orderBy, getFirestore,collection, getDocs, query} from "firebase/firestore"; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function History() {
@@ -22,33 +23,38 @@ export default function History() {
   const [isSafe, setisSafe] = useState("false");
   const [isSuspicious, setisisSuspicious] = useState("false");
   const [myData, setMyData] = useState([]);
+  const [sortedData, setSortedData]= useState([]);
   const [loading, setLoading] = useState(true)
+  const [ascending, setAscending] = useState(true);
 
   const [refreshing, setRefreshing] = useState(true);
 
   //  List of Data
   const historyData = [
 
-      {id:"1", link:"Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1Link1" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
-      {id:"2", link:"Link2" ,linkStatus:"Suspicious", time:"12:00 am", date:"08/03/2023"},
-      {id:"3", link:"Link3" ,linkStatus:"Suspicious", time:"12:00 am", date:"08/03/2023"},
-      {id:"4", link:"Link4" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
-      {id:"5", link:"Link5" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
-      {id:"6", link:"Link6" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
-      {id:"7", link:"Link7" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
-      {id:"8", link:"Link8" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
-      {id:"9", link:"Link9" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
-      {id:"10", link:"Link10" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
-      {id:"11", link:"Link11" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
-      {id:"12", link:"Link12" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
-    ];
+    {id:"1", link:"Link1" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
+    {id:"2", link:"Link2" ,linkStatus:"Suspicious", time:"12:00 am", date:"08/03/2023"},
+    {id:"3", link:"Link3" ,linkStatus:"Suspicious", time:"12:00 am", date:"08/03/2023"},
+    {id:"4", link:"Link4" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
+    {id:"5", link:"Link5" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
+    {id:"6", link:"Link6" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
+  ];
 
   // Font
   useEffect(() => {
 
-    fetchData();
+
+    const interval = setInterval(() =>{
+
+      fetchData();
+      
+
+    },3000
+    )
+    return () =>  clearInterval(interval);
    
-   }, [setMyData]);
+   
+   }, []);
 
    const onRefresh = () => {
     //Clear old data of the list
@@ -64,13 +70,19 @@ export default function History() {
 
       // try{
       const userJSON = await AsyncStorage.getItem("@user");
-      const userData = userJSON ? JSON.parse(userJSON):null;
+      const userData = userJSON ? JSON.parse(userJSON):null; 
     
       const val = doc(db, "qrCodeHistory",userData.uid)
       const ref = collection(val,"Generated")
-      const getValue = await getDocs(ref);
+      const getValue = await getDocs(query(ref),orderBy("qrCodeContent"));
 
-      setMyData(getValue.docs.map((doc)=> ({...doc.data(), id:doc.id})))
+      setMyData(getValue.docs.reverse().map((doc)=> ({...doc.data(), id:doc.id})))
+      // console.log(myData)
+      // sort data
+      // setSortedData(myData);
+      // toggleSorting();
+    
+   
       setRefreshing(false);
 
     }catch(e){
@@ -121,41 +133,7 @@ export default function History() {
   // Filter Data based on status
   const [data , setData] = useState(historyData);
   const [activeFilter, setActiveFilter] = useState('All');
-
-      // const filterData = (state) =>{
-
-      //       if (state === 'All'){
-      //           setData(historyData);
-      //       }else{
-
-      //       const filtered = historyData.filter(item => item.linkStatus === state);
-      //         setData(filtered);
-      //       }
-
-      //       setActiveFilter(state)
-      // };
-
-  
-  // Render Button with color based on data status
-  // const renderButton = (state, color) =>{
-
-  //     const isActive = activeFilter === state;
-
-  //     return(
-  //       <TouchableOpacity 
-  //           onPress = {() => filterData(state)} 
-  //           style = {[historyStyle.allBttn, isActive && {backgroundColor:color}]} 
-
-  //           >
-            
-  //           <Text 
-  //             style = {isActive && historyStyle.activeButtonText}>{state}  </Text>
-  //       </TouchableOpacity>
-
-
-  //     );
-
-  // }
+ 
 
     const [isLoaded] = useFonts({
       'Poppins-Regular':require ("../assets/font/Poppins/Poppins-Regular.ttf"),
@@ -164,6 +142,25 @@ export default function History() {
     if (!isLoaded){
       return null;
     }
+
+    const toggleSorting = () =>{
+
+      setAscending(!ascending);
+  
+     
+      const sortedArray = [...myData].sort((a,b) =>
+      
+      ascending ? a.value.localeCompare(b.id) :
+      b.value.localeCompare(a.id)
+  
+      );
+      setSortedData(sortedArray);
+      console.log(sortedData)
+      console.log(sortedArray)
+     
+    }
+  
+
 
 
     const renderAllData = ({item}) => {
@@ -183,8 +180,8 @@ export default function History() {
         </View>
 
         <View style = {historyStyle.rightHistory}>
-          <Text style = {historyStyle.historyTime}>   {item.qrCodeTime} </Text>
-          <Text style = {historyStyle.historyDate}> {item.qrCodeDate}  </Text>
+          {/* <Text style = {historyStyle.historyTime}>  </Text> */}
+          <Text style = {historyStyle.historyDate}> {Moment(item.qrCodeDate+","+item.qrCodeTime, "MMDDYYYY, h:mm:ss").fromNow()}  </Text>
         </View>         
     </View>
 
