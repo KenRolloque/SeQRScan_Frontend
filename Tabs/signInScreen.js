@@ -9,14 +9,38 @@ import { useNavigation } from '@react-navigation/native';
 import {app} from "../API/firebaseCRUD";
 import { getFirestore, doc, setDoc  } from "firebase/firestore";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const SignInScreen = ({promptAsync}) =>{
 
     // For Login
     const navigation = useNavigation()
-    const signin = () =>{
+    const signin = async() =>{
        
-      navigation.navigate(Navigation);
-      promptAsync();
+      try{
+        const userJSON = await AsyncStorage.getItem("@user");
+        const userData = userJSON ? JSON.parse(userJSON) : null;
+
+        console.log("User Json", userJSON)
+        
+        if(userJSON === null){
+
+          promptAsync();
+  
+
+        }else{
+          navigation.navigate(Navigation);
+          promptAsync();
+         
+        }
+
+  
+      }catch(e){
+
+
+      }
+
+
 
     }
 

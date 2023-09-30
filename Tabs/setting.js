@@ -20,7 +20,7 @@ const Setting = () =>{
   
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
-  const [userPhoto, setUserPhoto] = useState("");
+  const [userPhoto, setUserPhoto] = useState(null);
 
   useEffect(() => {
     const checkLocalUser = async()=>{

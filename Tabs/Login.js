@@ -28,7 +28,7 @@ WebBrowser.maybeCompleteAuthSession();
 const Login = ({navigation}) =>{
 
   // User Data
-  const [userID, setUserID] = React.useState();
+  const [userID, setUserID] = React.useState([]);
   const [userName, setUserName] = React.useState();
   const [userEmail, setUserEmail] = React.useState();
   const db = getFirestore(app);
@@ -45,6 +45,9 @@ const Login = ({navigation}) =>{
       const userJSON = await AsyncStorage.getItem("@user");
       const userData = userJSON ? JSON.parse(userJSON) : null;
       setUserInfo(userData);
+      setUserID(userJSON)
+
+    
     } catch (e) {
       console.log(e, "Error getting local user");
     } finally {
@@ -52,19 +55,8 @@ const Login = ({navigation}) =>{
     }
   };
 
-  const checkLocalUser = async()=>{
 
-    try{
-      const userJSON = await AsyncStorage.getItem("@user");
-      const userData = userJSON ? JSON.parse(userJSON):null;
 
-    }catch{
-
-      // alert.e(message);
-      console.log("Error")
-
-    }
-  }
 
   React.useEffect(() => {
     
@@ -86,7 +78,19 @@ const Login = ({navigation}) =>{
   }, [response]);
 
 
+  const checkLocalUser = async()=>{
 
+    try{
+      const userJSON = await AsyncStorage.getItem("@user");
+      const userData = userJSON ? JSON.parse(userJSON):null;
+
+    }catch{
+
+      // alert.e(message);
+      console.log("Error")
+
+    }
+  }
     const addUser = async () =>{
 
       console.log("user")
@@ -103,7 +107,6 @@ const Login = ({navigation}) =>{
      
   
       }
-  
     }
 
 
@@ -116,7 +119,6 @@ const Login = ({navigation}) =>{
         // console.log(JSON.stringify(user, null, 2));
         setUserInfo(user);
         addUser();
-        // checkLocalUser();
         // console.log("Login: ", checkLocalUser());
      
       } else {
@@ -134,7 +136,6 @@ const Login = ({navigation}) =>{
              <ActivityIndicator size={"large"} />
       </View>
     );
-
 
 
     return userInfo ? <Navigation /> : <SignInScreen promptAsync={promptAsync} />;
