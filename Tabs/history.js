@@ -204,6 +204,50 @@ export default function History() {
 
         </View> */}
 
+        <TouchableOpacity 
+            style={{
+              position:"absolute", 
+              bottom:20, 
+              right:20,
+              zIndex:1, 
+              backgroundColor:"#ff483b",
+              padding:15,
+              borderRadius:40
+            }}>
+        <Ionicons  name='trash-outline' size={20} color="#ffffff"/>
+        </TouchableOpacity>
+
+        <View style={historyStyle.labelContainer}>
+
+              <View style={historyStyle.safeContainer}>
+
+                  <View style={{width:10, height:10,backgroundColor:"#25C196",marginHorizontal: 10}}></View>
+                  <Text>Safe</Text>
+              </View>
+
+              <View style={historyStyle.suspiciousContainer}>
+
+                  <View style={{width:10, height:10,backgroundColor:"#FF5757",marginHorizontal: 10,}}></View>
+                  <Text>Suspicious</Text>
+              </View>
+
+              <View 
+                  style={historyStyle.messageContainer}>
+                  
+                  <View 
+                    style={{
+                      width:10,   
+                      height:10,
+                      backgroundColor:"#2FA0D8",
+                      marginHorizontal: 10
+                      }}>   
+                  </View>
+                  <Text>Message</Text>
+              </View>
+
+
+        </View>
+
 
 
         <View style ={historyStyle.historyList}>
@@ -226,22 +270,6 @@ export default function History() {
 
 
         
-{/* 
-        <View style = {historyStyle.listHistory2}>
-
-            <View style = {historyStyle.leftHistory}>
-              <Ionicons  name='person' size={18} color="#2FA0D8"/>
-              <View style = {historyStyle.details}>
-                <Text> You scanned </Text>
-                <Text> https://facebook.com </Text>
-              </View>
-            </View>
-
-            <View style = {historyStyle.rightHistory}>
-              <Text> Time </Text>
-              <Text> Date </Text>
-            </View>         
-        </View> */}
 
 
 

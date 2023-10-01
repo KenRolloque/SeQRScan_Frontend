@@ -289,7 +289,41 @@ export default function Gallery({navigation}) {
      </View>
 
    </ViewShot>
-    <Text>Created </Text>
+
+   <View style ={{width:"100%",flexDirection:"row"}}>
+      <Text 
+          style={{
+            fontFamily:"Poppins-Regular",
+            paddingHorizontal:5,
+            color:"#949494",
+            fontStyle:"italic"
+            }}>
+          Generated on
+      </Text>
+
+      <Text 
+          style={{
+            fontFamily:"Poppins-Regular",
+            paddingHorizontal:2,
+            color:"#949494",
+            fontStyle:"italic"
+            }}>
+          {selectedQR.qrCodeDate}
+      </Text>
+
+      <Text 
+          style={{
+            fontFamily:"Poppins-Regular",
+            paddingHorizontal:2,
+            color:"#949494",
+            fontStyle:"italic"
+            }}>
+          {selectedQR.qrCodeTime}
+      </Text>
+
+
+   </View>
+   
    </View>
 
     <View style={galleryStyle.descContainer}>

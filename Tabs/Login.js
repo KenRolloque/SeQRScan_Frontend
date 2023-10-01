@@ -132,7 +132,7 @@ const Login = ({navigation}) =>{
 
   if (loading)
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <View style={{height:"100%",width:"100%", alignItems: "center", justifyContent: "center" }}>
              <ActivityIndicator size={"large"} />
       </View>
     );

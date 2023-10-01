@@ -13,6 +13,7 @@ import {app} from "../API/firebaseCRUD";
 import { doc,setDoc, Timestamp, getFirestore,collection, addDoc, getDocs, deleteDoc} from "firebase/firestore"; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Moment from 'moment';
+import { SvgXml } from 'react-native-svg';
 
 export default function Scan({navigation}) {
 
@@ -95,6 +96,32 @@ const pleaseWait = () =>{
   );
 }
 
+const errorToast = () =>{
+  
+  ToastAndroid.showWithGravity(
+    'Failed to Read QR Code.',
+    ToastAndroid.SHORT, //can be SHORT, LONG
+    ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+  );
+}
+
+const validationError = () =>{
+  
+  ToastAndroid.showWithGravity(
+    'Failed to Validate QR Code. ',
+    ToastAndroid.SHORT, //can be SHORT, LONG
+    ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+  );
+}
+
+const invalidInput = () =>{
+  
+  ToastAndroid.showWithGravity(
+    'Failed to Read QR Code. Make sure it is a QR code ',
+    ToastAndroid.SHORT, //can be SHORT, LONG
+    ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+  );
+}
   // Scanning QR code
 
   const handleBarCodeScanned = ({ type, data }) => {
@@ -110,6 +137,7 @@ const pleaseWait = () =>{
       const status = "Message"
       sendServer(data, status)
       console.log(e)
+      errorToast()
     }
     
   };
@@ -117,13 +145,12 @@ const pleaseWait = () =>{
 
   // Send Data to Server
   const sendData = async(data) =>{
-    console.log("Hello")
     pleaseWait();
 
     try{
     console.log(data)
 
-    fetch('http://192.168.1.14:8000/validationServer/validate/', {
+    fetch('http://192.168.1.16:8000/validationServer/validate/', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -136,11 +163,15 @@ const pleaseWait = () =>{
     })
     .then((response) => response.json())
     .then((json) => getResponse(json,data))
-    .catch((error) => console.error("Error"));
+    .catch((error) => 
+      validationError()
+    
+    );
  
     } catch (error) {
-      console.error(error);
-      console.log("Error")
+      // console.error(error);
+      errorToast()
+     
     }
 }
 
@@ -223,20 +254,37 @@ console.log("Saved")
         const results = await BarCodeScanner.scanFromURLAsync(result.assets[0].uri)
         const qrCodeDataStrings = results.map(qrCode => qrCode.data);
         const data = qrCodeDataStrings.toString();
+
+        const booleanData = Boolean(data);
+
       
-        console.log("Pick Image",data)
+      
         // alert(`Data ${qrCodeDataStrings} has been scanned!`);
         try{
-          url = Boolean (new URL("",data))
-          sendData(data)
+          if (booleanData === false){
+
+            invalidInput();
+
+          }else{
+            url = Boolean (new URL("",data))
+            sendData(data)
+          }
+
     
         }catch (e){
+          if (booleanData === false){
+
+            invalidInput();
+          }else{
+          }
           const status = "Message"
           sendServer(data, status)
           navigation.navigate("Message", {
         
             message:data
         })  
+
+
         }
       
      } catch(error){
