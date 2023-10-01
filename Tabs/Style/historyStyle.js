@@ -6,7 +6,10 @@ const historyStyle = StyleSheet.create({
     mainContainer:{
         flex:1,
         backgroundColor:"white",
-        alignItems:"center"
+        alignItems:"center",
+        margin:0,
+        padding:0,
+    
     },
     bttnCont:{
         width:"90%",
@@ -14,6 +17,29 @@ const historyStyle = StyleSheet.create({
         justifyContent:"space-between",
         marginVertical:20
         
+
+    },
+    labelContainer:{
+        width:"100%",
+        flexDirection:"row", 
+        justifyContent:"center",
+    },
+    safeContainer:{
+        flexDirection:"row", 
+        alignItems:"center",
+        paddingHorizontal: 20,
+
+    },
+    suspiciousContainer:{
+        flexDirection:"row", 
+        alignItems:"center",
+        paddingHorizontal: 20,
+
+    },
+    messageContainer:{
+        flexDirection:"row", 
+        alignItems:"center",
+        paddingHorizontal: 20,
 
     },
     allBttn:{
@@ -133,6 +159,7 @@ const historyStyle = StyleSheet.create({
     historyList:{
         width:"90%",
         alignItems:"center",
+        margin:20
     },
     activeButtonText:{
 

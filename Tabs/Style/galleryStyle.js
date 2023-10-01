@@ -9,6 +9,7 @@ const galleryStyle = StyleSheet.create({
         alignItems:"center",    
 
 
+
     },sectionOne:{
         width:"90%",
         textAlign:"center",
@@ -186,6 +187,8 @@ const galleryStyle = StyleSheet.create({
         backgroundColor:"#ffffff",
         padding:20,
         marginBottom:10,
+
+        alignItems:"center"
     },
 
     modalValue:{
