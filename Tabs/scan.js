@@ -150,7 +150,7 @@ const invalidInput = () =>{
     try{
     console.log(data)
 
-    fetch('http://192.168.1.16:8000/validationServer/validate/', {
+    fetch('http://3.27.212.25/validationServer/validate/', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

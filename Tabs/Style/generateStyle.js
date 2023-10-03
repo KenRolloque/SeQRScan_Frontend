@@ -239,21 +239,7 @@ const generateStyle = StyleSheet.create({
       modalView: {
         width:"80%",
         height:"75%",
-        // flex:1,
-        // marginTop: 20,
-        // backgroundColor: 'red',
-        // paddingBottom:20,
-        // borderRadius: 20,
-        // padding: 35,
         alignItems: 'center',
-        // shadowColor: '#000',
-        // shadowOffset: {
-        //   width: 0,
-        //   height: 2,
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 4,
-        // elevation: 5,
       },
 
       backContainer:{
@@ -262,9 +248,7 @@ const generateStyle = StyleSheet.create({
       },
 
       button: {
-        // borderRadius: 20,
-        // padding: 10,
-        // elevation: 2,
+
         width:"20%",
         alignItems:"center",
         borderRadius:5,
@@ -307,21 +291,15 @@ const generateStyle = StyleSheet.create({
 
     descContainer:{
         width:"90%",
-        // alignItems:"center",
+
         marginBottom:10,
         flexDirection:"row",
-        // borderWidth:1,
-        // backgroundColor:"#f0f8ff",
-        // padding:10,
         borderRadius:10,
     },
 
     linkIconContainer:{
         paddingHorizontal:10,
         backgroundColor:"none",
-
-        // justifyContent:"center"
-
     },
 
     linkIcon:{
@@ -329,15 +307,10 @@ const generateStyle = StyleSheet.create({
     },
     linkLabelContainer:{
         backgroundColor:"none",
-        // borderWidth:1,
-        width:"80%",
-        // height:"50%"
-
+        width:"88%",
     },
     linkLabel:{
         fontSize:16,
-        // fontWeight:"bold",
-
         fontFamily:"Poppins-SemiBold",
         color:"#4d4d4d"
 
@@ -346,26 +319,19 @@ const generateStyle = StyleSheet.create({
     link:{
         color:"#00BF63",
         width:"100%",
-        fontFamily:"Poppins-Regular"
-
-       
-        // fontFamily:"Poppins"
+        fontFamily:"Poppins-Regular",
+        paddingRight:10
     },
     desc:{
         color:"#00BF63",
         width:"100%",
         fontFamily:"Poppins-Regular"
-
-
-
     },
 
     descLabel:{
         fontSize:15,
         fontFamily:"Poppins-SemiBold",
         color:"#4d4d4d"
-
-
     },
 
     descLabelContainer:{

@@ -16,29 +16,16 @@ import {app} from "../API/firebaseCRUD";
 
 import { doc,orderBy, getFirestore,collection, getDocs, query} from "firebase/firestore"; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import Loading
+ from '../components/loading';
 export default function History() {
 
-  const [isAll, setisAll] = useState("true");
-  const [isSafe, setisSafe] = useState("false");
-  const [isSuspicious, setisisSuspicious] = useState("false");
   const [myData, setMyData] = useState([]);
   const [sortedData, setSortedData]= useState([]);
-  const [loading, setLoading] = useState(true)
   const [ascending, setAscending] = useState(true);
-
   const [refreshing, setRefreshing] = useState(true);
 
   //  List of Data
-  const historyData = [
-
-    {id:"1", link:"Link1" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
-    {id:"2", link:"Link2" ,linkStatus:"Suspicious", time:"12:00 am", date:"08/03/2023"},
-    {id:"3", link:"Link3" ,linkStatus:"Suspicious", time:"12:00 am", date:"08/03/2023"},
-    {id:"4", link:"Link4" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
-    {id:"5", link:"Link5" ,linkStatus:"Safe", time:"12:00 am", date:"08/03/2023"},
-    {id:"6", link:"Link6" ,linkStatus:"Message", time:"12:00 am", date:"08/03/2023"},
-  ];
 
   // Font
   useEffect(() => {
@@ -56,12 +43,7 @@ export default function History() {
    
    }, []);
 
-   const onRefresh = () => {
-    //Clear old data of the list
-    setMyData([]);
-    //Call the Service to get the latest data
-    fetchData();
-  };
+
 
   const fetchData = async() =>{
 
@@ -86,11 +68,11 @@ export default function History() {
       setRefreshing(false);
 
     }catch(e){
-      ToastAndroid.showWithGravity(
-        'Failed to Fetch Data. Please check you internet connection',
-        ToastAndroid.SHORT, //can be SHORT, LONG
-        ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
-      );
+      // ToastAndroid.showWithGravity(
+      //   'Failed to Fetch Data. Please check you internet connection',
+      //   ToastAndroid.SHORT, //can be SHORT, LONG
+      //   ToastAndroid.CENTER //can be TOP, BOTTON, CENTER
+      // );
   
     }
 
@@ -131,7 +113,7 @@ export default function History() {
 
 
   // Filter Data based on status
-  const [data , setData] = useState(historyData);
+
   const [activeFilter, setActiveFilter] = useState('All');
  
 
@@ -143,23 +125,6 @@ export default function History() {
       return null;
     }
 
-    const toggleSorting = () =>{
-
-      setAscending(!ascending);
-  
-     
-      const sortedArray = [...myData].sort((a,b) =>
-      
-      ascending ? a.value.localeCompare(b.id) :
-      b.value.localeCompare(a.id)
-  
-      );
-      setSortedData(sortedArray);
-      console.log(sortedData)
-      console.log(sortedArray)
-     
-    }
-  
 
 
 
@@ -204,19 +169,6 @@ export default function History() {
 
         </View> */}
 
-        <TouchableOpacity 
-            style={{
-              position:"absolute", 
-              bottom:20, 
-              right:20,
-              zIndex:1, 
-              backgroundColor:"#ff483b",
-              padding:15,
-              borderRadius:40
-            }}>
-        <Ionicons  name='trash-outline' size={20} color="#ffffff"/>
-        </TouchableOpacity>
-
         <View style={historyStyle.labelContainer}>
 
               <View style={historyStyle.safeContainer}>
@@ -257,13 +209,8 @@ export default function History() {
                   data={myData}
                   keyExtractor={(item) => item.id}
                   renderItem={renderAllData}
-                  refreshControl={
-                    <RefreshControl
-                      //refresh control used for the Pull to Refresh
-                      refreshing={refreshing}
-                      onRefresh={onRefresh}
-                    />
-                  }
+                  ListEmptyComponent={Loading}
+   
                   
             />
         </View>

@@ -8,9 +8,9 @@ import Navigation from '../Navigation/navigation'
 import SafeScreen from '../Tabs/Other/SafeScreen'
 import SuspiciousScreen from '../Tabs/Other/SuspiciousScreen';
 import Message from '../Tabs/Other/message';
-import Sample from '../Tabs/sample';
-
-// import Layout from '../Navigation/navigation';
+import Logout from '../Tabs/logout';
+import SignInScreen from '../Tabs/signInScreen';
+import GalleryModal from '../Tabs/Modal/galleryModal';
 
 
 const Stack = createStackNavigator();
@@ -24,7 +24,9 @@ const Layout = () =>{
         <Stack.Screen name="SuspiciousScreen" component={SuspiciousScreen} options={{ headerShown: true }}></Stack.Screen>  
         <Stack.Screen name="Navigation" component={Navigation} options={{ headerShown: false }}></Stack.Screen>
         <Stack.Screen name="Message" component={Message} options={{ headerShown: true }}></Stack.Screen>
-        <Stack.Screen name="Sample" component={Sample} options={{ headerShown: true }}></Stack.Screen>
+        <Stack.Screen name="Logout" component={Logout} options={{ headerShown: false }}></Stack.Screen>
+        <Stack.Screen name="SignInScreen" component={SignInScreen} options={{ headerShown: false }}></Stack.Screen>
+        <Stack.Screen name="GalleryModal" component={GalleryModal} options={{ headerShown: false }}></Stack.Screen>
 
       </Stack.Navigator>
     );

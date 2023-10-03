@@ -10,30 +10,21 @@ const scanStyle = StyleSheet.create({
 
     cameraContainer:{
        
-        // width:"100%",
-        // height:"65%"
         flex:1,
         justifyContent:"flex-end",
         alignItems:"center"
   
-
     },
 
     buttonContainer:{
 
         borderWidth:1,
         alignItems:"center",
-
-       
-        
+  
     },
 
     buttonContainer2:{
-        width:"100%",
-        // borderWidth:1,
-        // backgroundColor:"#00a398",
-        // justifyContent:"center",
-        
+        width:"100%",    
        
     },
 
@@ -104,9 +95,7 @@ const scanStyle = StyleSheet.create({
         marginTop:5, 
         borderWidth:0, 
         color:"white",
-        // backgroundColor:'rgba(84, 84, 84, 0.4)',
-        // paddingVertical:5,
-        // paddingHorizontal:10
+
         
     }
 })
