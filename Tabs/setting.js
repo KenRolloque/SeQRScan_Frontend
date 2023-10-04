@@ -61,10 +61,11 @@ const Setting = ({navigation}) =>{
 
     const logout = async() =>{
   
-      await signOut (auth);
-      await AsyncStorage.removeItem("@user"); 
+
       const pushAction = StackActions.push('Logout')     
       navigation.dispatch(pushAction);
+      await signOut (auth);
+      await AsyncStorage.removeItem("@user"); 
       // NativeModules.DevSettings.reload();
 
     }

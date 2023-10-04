@@ -4,10 +4,10 @@
     "slug": "expo2",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/app/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash2.png",
+      "image": "./assets/app/splashscreen.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -15,20 +15,20 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+          "cameraPermission": "Allow SeQRScan to access your camera."
         }
       ],
       [
         "expo-barcode-scanner",
         {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
+          "cameraPermission": "Allow SeQRScan to access camera."
         }
       ],
       [
         "expo-media-library",
         {
-          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
-          "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+          "photosPermission": "Allow SeQRScan to access your photos.",
+          "savePhotosPermission": "Allow SeQRScan to save photos.",
           "isAccessMediaLocationEnabled": true
         }
       ]
@@ -39,10 +39,10 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access camera.",
-        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone",
-        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos.",
-        "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos."
+        "NSCameraUsageDescription": "Allow SeQRScan to access camera.",
+        "NSMicrophoneUsageDescription": "Allow SeQRScan to access your microphone",
+        "NSPhotoLibraryUsageDescription": "Allow SeQRScanto access your photos.",
+        "NSPhotoLibraryAddUsageDescription": "Allow SeQRScan to save photos."
       }
     },
     "android": {

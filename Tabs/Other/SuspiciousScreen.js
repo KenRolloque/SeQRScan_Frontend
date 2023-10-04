@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { suspiciousStyle } from './suspiciousStyle';
-import { View, Text, ImageBackground, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, ImageBackground, TouchableOpacity, Linking,Alert, ToastAndroid} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard'
 const SuspiciousScreen = ({route,navigation}) =>   {
@@ -73,9 +73,6 @@ const SuspiciousScreen = ({route,navigation}) =>   {
 
             <TouchableOpacity 
                 style={suspiciousStyle.goBttn}
-                // onPress={ () =>{
-                //     Linking.openURL('https://aboutreact.com');
-                // }}
                 onPress={redirect}
 
             >
