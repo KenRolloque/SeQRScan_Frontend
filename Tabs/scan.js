@@ -136,8 +136,12 @@ const invalidInput = () =>{
     }catch (e){
       const status = "Message"
       sendServer(data, status)
-      console.log(e)
-      errorToast()
+      navigation.navigate("Message", {
+        
+            message:data
+      })  
+
+
     }
     
   };
@@ -150,7 +154,7 @@ const invalidInput = () =>{
     try{
     console.log(data)
 
-    fetch('http://192.168.1.16:8000/validationServer/validate/', {
+    fetch('https://seqrscan.online/validationServer/validate/', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -179,7 +183,7 @@ const invalidInput = () =>{
 
 const getResponse = async (json,data) =>{
   console.log("get response")
-
+  console.log(json.result)
   try{
     if (json.result == 1){
       const status = "Safe"

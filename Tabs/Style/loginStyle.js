@@ -5,13 +5,16 @@ const loginStyle = StyleSheet.create({
     mainContainer:{
         flex:1,
         justifyContent:"center",
-        alignItems:"center"
+        alignItems:"center",
+        backgroundColor:"#ffffff"
     },
 
     logoContainer:{
         flexDirection:"row",
         alignItems:"center",
-        justifyContent:"center"
+        justifyContent:"center",
+        paddingHorizontal:10,
+       
     },
 
     logoText:{

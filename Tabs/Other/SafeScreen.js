@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground,TouchableOpacity,ToastAndroid,Linking } from 'react-native';
+import { View, Text, ImageBackground,TouchableOpacity,ToastAndroid,Linking, Alert } from 'react-native';
 import { safeStyle } from './safeStyle';
 import { Ionicons } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard'
@@ -11,6 +11,27 @@ const SafeScreen = ({route,navigation}) =>   {
         await Clipboard.setStringAsync(link);
         ToastAndroid.show('Copy to clipboard', ToastAndroid.SHORT);
       };
+
+
+      const redirect = () =>{
+
+        Alert.alert(
+            //title
+            'Redirecting',
+            //body
+            'Confirm to access link?',
+            [
+              { text: 'Confirm', onPress: () => {Linking.openURL(link);} },
+              {
+                text: 'No',
+                onPress: () => console.log('No Pressed'),
+                style: 'cancel',
+              },
+            ],
+            { cancelable: false }
+          );
+    
+    }
 
     return (
       <View  style={safeStyle.mainContainer}>
@@ -55,7 +76,7 @@ const SafeScreen = ({route,navigation}) =>   {
             <TouchableOpacity 
 
                 style={safeStyle.goBttn}   
-                onPress={ () => Linking.openURL("https://www.facebook.com/")}
+                onPress={ redirect}
 
             >
                 <Text style={safeStyle.goLabel} numberOfLines={1}> Go {link}</Text>

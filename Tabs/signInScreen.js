@@ -15,6 +15,9 @@ const SignInScreen = ({promptAsync}) =>{
 
     // For Login
     const navigation = useNavigation()
+
+
+
     const signin = async() =>{
        
       try{
@@ -60,11 +63,11 @@ const SignInScreen = ({promptAsync}) =>{
 
     return (
       <SafeAreaView style={loginStyle.mainContainer}>
-
+     
           <View style={loginStyle.logoContainer}> 
             <Ionicons name="qr-code-outline" size={80} color={"#004694"}/>
             <Text style={loginStyle.logoText}> SeQRScan</Text>
-          </View>
+            </View>
 
           
           <TouchableOpacity style ={loginStyle.loginBttn} onPress={signin}>

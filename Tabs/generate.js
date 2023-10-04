@@ -227,7 +227,6 @@ export default function Generate() {
             </View>
 
             <TextInput
-                multiline
                 placeholder='Enter Description'
                 onChangeText={handleChangeDesc}
                 value={desc}
@@ -329,7 +328,7 @@ export default function Generate() {
                     <View style={generateStyle.descLabelContainer}>
 
                         <Text style={generateStyle.descLabel}> Description </Text>
-                        <Text style={generateStyle.desc} > {desc}</Text> 
+                        <Text style={generateStyle.desc} numberOfLines={1}> {desc}</Text> 
                     </View>
 
             </View>

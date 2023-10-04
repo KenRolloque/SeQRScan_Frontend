@@ -6,7 +6,7 @@ import { signOut } from "firebase/auth";
 import {settingStyle} from "./Style/settingStyle"
 import { useFonts } from 'expo-font';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
+import { StackActions } from '@react-navigation/native';
 import {
   SafeAreaView,
   SafeAreaProvider,
@@ -15,9 +15,8 @@ import {
 } from 'react-native-safe-area-context';
 
 
-
-const Setting = () =>{
-  
+const Setting = ({navigation}) =>{
+  const popAction = StackActions.pop(1);
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [userPhoto, setUserPhoto] = useState(null);
@@ -60,6 +59,16 @@ const Setting = () =>{
       // on screen  load, ask for permission to use the camera
   
 
+    const logout = async() =>{
+  
+
+      const pushAction = StackActions.push('Logout')     
+      navigation.dispatch(pushAction);
+      await signOut (auth);
+      await AsyncStorage.removeItem("@user"); 
+      // NativeModules.DevSettings.reload();
+
+    }
 
     return (
       <SafeAreaView style = {settingStyle.mainContainer}>
@@ -86,14 +95,8 @@ const Setting = () =>{
          <TouchableOpacity 
          
          style ={settingStyle.logout}
-         onPress={
-            async() => {
-              await signOut (auth);
-              await AsyncStorage.removeItem("@user");      
-              NativeModules.DevSettings.reload();
-            }
+         onPress={logout}>
 
-         }>
             <Ionicons name="log-out-outline" size={20}  />
             <Text style={settingStyle.logoutText} >Logout</Text>
          </TouchableOpacity>
